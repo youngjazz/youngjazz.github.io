@@ -6,20 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>java多线程同步控制 | Leon&#39; Blog</title>
+  <title>Tag: DB | Leon&#39; Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="synchronized的功能扩展：重入锁重入锁完全可以替代synchronized关键字，远优于synchronized，但JDK之后synchronized做了大量优化。差距不大 123456789101112131415161718192021222324252627282930public class ReenterLock implements Runnable &amp;#123;	publi">
-<meta name="keywords" content="java并发">
-<meta property="og:type" content="article">
-<meta property="og:title" content="java多线程同步控制">
-<meta property="og:url" content="http://yoursite.com/2017/03/14/并发/Java多线程同步控制/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Leon&#39; Blog">
+<meta property="og:url" content="http://yoursite.com/tags/DB/index.html">
 <meta property="og:site_name" content="Leon&#39; Blog">
-<meta property="og:description" content="synchronized的功能扩展：重入锁重入锁完全可以替代synchronized关键字，远优于synchronized，但JDK之后synchronized做了大量优化。差距不大 123456789101112131415161718192021222324252627282930public class ReenterLock implements Runnable &amp;#123;	publi">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-17T03:29:22.670Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="java多线程同步控制">
-<meta name="twitter:description" content="synchronized的功能扩展：重入锁重入锁完全可以替代synchronized关键字，远优于synchronized，但JDK之后synchronized做了大量优化。差距不大 123456789101112131415161718192021222324252627282930public class ReenterLock implements Runnable &amp;#123;	publi">
+<meta name="twitter:title" content="Leon&#39; Blog">
   
     <link rel="alternative" href="/atom.xml" title="Leon&#39; Blog" type="application/atom+xml">
   
@@ -157,108 +152,48 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-并发/Java多线程同步控制" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      java多线程同步控制
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2017" class="archive-year">2017</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2017/09/26/DB/索引/" class="archive-article-date">
+  	<time datetime="2017-09-26T15:44:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-26</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2017/09/26/DB/索引/">索引</a>
     </h1>
   
 
-        
-        <a href="/2017/03/14/并发/Java多线程同步控制/" class="archive-article-date">
-  	<time datetime="2017-03-14T10:45:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="synchronized的功能扩展：重入锁"><a href="#synchronized的功能扩展：重入锁" class="headerlink" title="synchronized的功能扩展：重入锁"></a>synchronized的功能扩展：重入锁</h3><p>重入锁完全可以替代<em>synchronized</em>关键字，远优于<em>synchronized</em>，但<em>JDK</em>之后<em>synchronized</em>做了大量优化。差距不大</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReenterLock</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> ReentrantLock reentrantLock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">10000000</span>; j++) &#123;</span><br><span class="line">			reentrantLock.lock();</span><br><span class="line">			reentrantLock.lock();<span class="comment">//这就是之所以叫重入锁的原因（局限于一个线程），而不会和自己产生死锁</span></span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				i++;</span><br><span class="line">			&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line"><span class="comment">//				reentrantLock.unlock();</span></span><br><span class="line">				reentrantLock.unlock();</span><br><span class="line">				reentrantLock.unlock();<span class="comment">//不过，多少次加锁就要对应次数的释放锁</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		ReenterLock lock = <span class="keyword">new</span> ReenterLock();</span><br><span class="line">		Thread t1 = <span class="keyword">new</span> Thread(lock);</span><br><span class="line">		Thread t2 = <span class="keyword">new</span> Thread(lock);</span><br><span class="line"></span><br><span class="line">		t1.start();t2.start();</span><br><span class="line">		t1.join();t2.join();</span><br><span class="line"></span><br><span class="line">		System.out.println(i);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>从上面的代码可以看出，重入锁有着显式操作过程。开发人会必须指定何时加锁，何时释放。突出一个灵活，但是在退出临界区时必须释放，否则其他的线程就无法进入。之所以叫<strong>重入锁</strong>是因为这种锁可以重复进入。当然这里的重复进入仅限一个线程。注意的是同一个线程多次获取锁就要多次释放锁。</p>
-<h3 id="中断响应"><a href="#中断响应" class="headerlink" title="中断响应"></a>中断响应</h3><p>在等待锁的过程中，程序有可能根据需要取消对锁的请求。比如你和朋友约好了一起打球，如果你等了半小时朋友还没到，突然接到电话说有急事不能如约，那你就没必要在等待了。<br><a id="more"></a><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * DESCRIPTION：中断响应</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IntLock</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> ReentrantLock lock1 = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> ReentrantLock lock2 = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">	<span class="keyword">int</span> lock;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 控制加锁顺序，方便构造死锁</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> lock</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">IntLock</span><span class="params">(<span class="keyword">int</span> lock)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.lock = lock;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">if</span>(lock==<span class="number">1</span>)&#123;</span><br><span class="line">				lock1.lockInterruptibly();<span class="comment">//lockInterruptibly 在等待锁的过程中，可以响应中断</span></span><br><span class="line">				<span class="keyword">try</span> &#123;</span><br><span class="line">					Thread.sleep(<span class="number">500</span>);</span><br><span class="line">				&#125;<span class="keyword">catch</span> (InterruptedException e)&#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">				lock2.lockInterruptibly();</span><br><span class="line"></span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				lock2.lockInterruptibly();</span><br><span class="line">				<span class="keyword">try</span> &#123;</span><br><span class="line">					Thread.sleep(<span class="number">500</span>);</span><br><span class="line">				&#125;<span class="keyword">catch</span> (InterruptedException e)&#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">				lock1.lockInterruptibly();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;<span class="keyword">catch</span> (InterruptedException e)&#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">if</span>(lock1.isHeldByCurrentThread())&#123;</span><br><span class="line">				lock1.unlock();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(lock2.isHeldByCurrentThread())&#123;</span><br><span class="line">				lock2.unlock();</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			System.out.println(Thread.currentThread().getId()+<span class="string">"：线程退出"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		IntLock r1 = <span class="keyword">new</span> IntLock(<span class="number">1</span>);</span><br><span class="line">		IntLock r2 = <span class="keyword">new</span> IntLock(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">		Thread t1 = <span class="keyword">new</span> Thread(r1);</span><br><span class="line">		Thread t2 = <span class="keyword">new</span> Thread(r2);</span><br><span class="line"></span><br><span class="line">		t1.start();t2.start();</span><br><span class="line">		Thread.sleep(<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//中断其中一个线程,这里t1真正执行完毕 t2线程放弃其任务而退出, 释放资源</span></span><br><span class="line">		 t2.interrupt();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>线程t1、 t2启动后，t1先占用lock1，在占用lock2；t2先占用lock2，在请求占用lock1，因此很容易形成t1和t2之间相互等待。在代码63行主线程睡眠，t1、t2两线程处于死锁状态，66行t2被中断，故t2放弃了对lock1的申请，同事释放已获得lock2，这波操作是的t1可以真正顺利的完成任务。</p>
-<h3 id="锁申请等待限时"><a href="#锁申请等待限时" class="headerlink" title="锁申请等待限时"></a>锁申请等待限时</h3><p>除了等待外部通知外，避免死锁的一种方式。有时候我们无法确定为何一个线程迟迟拿不到锁，可能是因为死锁，可能是因为饥饿。但如果我们给定一个等待时间，让线程自动放弃，那么对系统来说是很有意义的。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * DESCRIPTION：无参tryLock() 如果锁被其他前程占有,不会等待而是立即返回false</span></span><br><span class="line"><span class="comment"> * 这种模式不会引起线程等待,故不会发生死锁</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TryLock</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ReentrantLock lock1 = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">    <span class="keyword">public</span> ReentrantLock lock2 = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">    <span class="keyword">int</span>                  lock;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TryLock</span><span class="params">(<span class="keyword">int</span> lock)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.lock = lock;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (lock == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (lock1.tryLock()) &#123;</span><br><span class="line">                        <span class="keyword">try</span> &#123;</span><br><span class="line">                            Thread.sleep(<span class="number">500</span>);</span><br><span class="line">                        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                            e.printStackTrace();</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (lock2.tryLock()) &#123;</span><br><span class="line">                        System.out.println(Thread.currentThread().getId() + <span class="string">": My job done"</span>);</span><br><span class="line">                        lock2.unlock();</span><br><span class="line">                        <span class="keyword">return</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    lock1.unlock();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (lock2.tryLock()) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        <span class="keyword">try</span> &#123;</span><br><span class="line">                            Thread.sleep(<span class="number">500</span>);</span><br><span class="line">                        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                            e.printStackTrace();</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">if</span> (lock1.tryLock()) &#123;</span><br><span class="line">                            System.out.println(Thread.currentThread().getId() + <span class="string">": my job done"</span>);</span><br><span class="line">                            lock1.unlock();</span><br><span class="line">                            <span class="keyword">return</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                        lock2.unlock();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        TryLock r1 = <span class="keyword">new</span> TryLock(<span class="number">1</span>);</span><br><span class="line">        TryLock r2 = <span class="keyword">new</span> TryLock(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(r1);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(r2);</span><br><span class="line"></span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="公平锁"><a href="#公平锁" class="headerlink" title="公平锁"></a>公平锁</h3><p>大多数情况下，所得获得都是非公平的（比如使用synchronized关键字进行锁控制）。系统只是在这个锁的等待队列随机挑选一个。而公平锁不是这样，它会按照时间的先后顺序保证先到先得，后到后得。公平锁的一大特点就是<strong>不会产生饥饿现象</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FairLock</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> ReentrantLock fairLock = <span class="keyword">new</span> ReentrantLock(<span class="keyword">true</span>); <span class="comment">//fair参数为true公平锁</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">while</span> (<span class="keyword">true</span>)&#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				fairLock.lock();</span><br><span class="line">				System.out.println(Thread.currentThread().getName()+<span class="string">"获得锁"</span>);</span><br><span class="line">			&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">				fairLock.unlock();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		FairLock r1 = <span class="keyword">new</span> FairLock();</span><br><span class="line">		Thread t1 = <span class="keyword">new</span> Thread(r1,<span class="string">"Thread_t1"</span>);</span><br><span class="line">		Thread t2 = <span class="keyword">new</span> Thread(r1,<span class="string">"Thread_t2"</span>);</span><br><span class="line"></span><br><span class="line">		t1.start();t2.start();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>fair参数为true时表示锁是公平的。但是要实现公平锁就必须要维护一个有序队列，因此公平锁的成本比较高，性能相对非常低下。因此默认是非公平的。</p>
-<h3 id="重入锁的好搭档：Condition条件"><a href="#重入锁的好搭档：Condition条件" class="headerlink" title="重入锁的好搭档：Condition条件"></a>重入锁的好搭档：Condition条件</h3><p>如果理解了Object.wait()和Object.notify()方法的话，那么久很容易理解Condition对象了，它可以让线程在合适的时间等待，或者某一特定时刻得到通知。Condition接口的基本方法如下：</p>
-<ul>
-<li>await(): 当前线程等待，同时释放当前锁；当其他线程使用signal或signalAll，线程会重新获得锁并运行。或者当线程中断时，也能跳出等待，和Object.wait()很相似。</li>
-<li>awaitUninterruptibly: 和wait方法基本相同，只是不会再等待过程中响应中断。</li>
-<li>signal：唤醒一个等待中的线程。</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReenterLockCondition</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> Condition condition = lock.newCondition();</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			lock.lock();</span><br><span class="line">			condition.await();</span><br><span class="line">			System.out.println(<span class="string">"Thread is going on"</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		ReenterLockCondition rlc =<span class="keyword">new</span> ReenterLockCondition();</span><br><span class="line">		Thread t1 = <span class="keyword">new</span> Thread(rlc);</span><br><span class="line"></span><br><span class="line">		t1.start();</span><br><span class="line">		t1.sleep(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">		lock.lock();</span><br><span class="line">		condition.signal();<span class="comment">//主线程main通知线程t1继续执行</span></span><br><span class="line">		lock.unlock(); <span class="comment">//释放相关的锁，谦让给被唤醒的线程，让他可以继续执行。如果无此行代码，虽然ti被唤醒，依然不能重新获得锁。</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在JDK内部，重入锁和Condition被大量使用，以ArrayBlockingQueue为例 看下其take，put的实现···</p>
-<h3 id="允许多个线程同时访问：信号量Semaphore"><a href="#允许多个线程同时访问：信号量Semaphore" class="headerlink" title="允许多个线程同时访问：信号量Semaphore"></a>允许多个线程同时访问：信号量Semaphore</h3><p><strong>缘起：</strong>无论是内部锁synchronized还是重入锁ReentrantLock, 一次只能允许一个线程访问一个资源，而要指定多个线程访问同一资源呢？</p>
-<p>信号量就可以满足以上需求，在构造信号量时，必须指定信号量的准入数，即可同时申请多少个许可，即相当于同时又多少个线程访问同一资源。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * DESCRIPTION：信号量：允许多个线程同时访问</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SemaphoreDemo</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">	<span class="keyword">final</span> Semaphore semaphore = <span class="keyword">new</span> Semaphore(<span class="number">5</span>);</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			semaphore.acquire();</span><br><span class="line"></span><br><span class="line">			<span class="comment">//模拟耗时</span></span><br><span class="line">			Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">			System.out.println(Thread.currentThread().getId()+<span class="string">":done"</span>);</span><br><span class="line"></span><br><span class="line">			semaphore.release();</span><br><span class="line"></span><br><span class="line">		&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		ExecutorService executorService = Executors.newFixedThreadPool(<span class="number">20</span>);</span><br><span class="line">		<span class="keyword">final</span> SemaphoreDemo demo = <span class="keyword">new</span> SemaphoreDemo();</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; i++) &#123;</span><br><span class="line">			executorService.execute(demo);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>第七行申明了一个包含五个许可的信号量，意味着同时可以有5个线程进入代码段14-15。申请时使用acquire，离开时务必release，不然就会发生信号量泄露。</p>
-<h3 id="ReadWriteLock读写锁"><a href="#ReadWriteLock读写锁" class="headerlink" title="ReadWriteLock读写锁"></a>ReadWriteLock读写锁</h3><p>读写锁可以有效帮助减少锁竞争，以提升系统性能。</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>读</th>
-<th>写</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>读</strong></td>
-<td>非阻塞</td>
-<td>阻塞</td>
-</tr>
-<tr>
-<td><strong>写</strong></td>
-<td>阻塞</td>
-<td>阻塞</td>
-</tr>
-</tbody>
-</table>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadWriteLockDemo</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> ReentrantReadWriteLock readWriteLock = <span class="keyword">new</span> ReentrantReadWriteLock();</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> Lock readLock = readWriteLock.readLock();</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> Lock writeLock = readWriteLock.writeLock();</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> value;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">final</span> ReadWriteLockDemo demo = <span class="keyword">new</span> ReadWriteLockDemo();</span><br><span class="line">		Runnable readRunable = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="keyword">try</span> &#123;</span><br><span class="line">					demo.handleRead(readLock);</span><br><span class="line"><span class="comment">//					demo.handleRead(lock);</span></span><br><span class="line">				&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;;</span><br><span class="line"></span><br><span class="line">		Runnable writeRunnable = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				demo.handleWrite(writeLock,<span class="keyword">new</span> Random().nextInt());</span><br><span class="line"><span class="comment">//				demo.handleWrite(lock,new Random().nextInt());</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">18</span>; i++) &#123;</span><br><span class="line">			<span class="keyword">new</span> Thread(readRunable).start();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i =<span class="number">18</span>; i &lt; <span class="number">20</span>; i++) &#123;</span><br><span class="line">			<span class="keyword">new</span> Thread(writeRunnable).start();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">handleRead</span><span class="params">(Lock lock)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		lock.lock();</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">//模拟读操作</span></span><br><span class="line">			Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">			<span class="keyword">return</span> value;</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleWrite</span><span class="params">(Lock lock,<span class="keyword">int</span> index)</span></span>&#123;</span><br><span class="line">		lock.lock();</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">//模拟写操作</span></span><br><span class="line">			Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">			value = index;</span><br><span class="line"></span><br><span class="line">		&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果使用普通锁代替读写锁，那么所有的读写线程之间必须相互等待。</p>
-<h3 id="倒计时器：CountDownLatch"><a href="#倒计时器：CountDownLatch" class="headerlink" title="倒计时器：CountDownLatch"></a>倒计时器：CountDownLatch</h3><p>这个工具是用来控制线程等待，它可以让某一线程等待直到倒计时结束，再开始执行。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CountDownLatchDemo</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">final</span> CountDownLatchDemo demo = <span class="keyword">new</span> CountDownLatchDemo();</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">final</span> CountDownLatch end = <span class="keyword">new</span> CountDownLatch(<span class="number">10</span>);</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//模拟检查任务</span></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			Thread.sleep(<span class="keyword">new</span> Random().nextInt(<span class="number">10</span>)*<span class="number">100</span>);</span><br><span class="line">			System.out.println(<span class="string">"check complete"</span>);</span><br><span class="line">			end.countDown(); <span class="comment">//通知CountDownLatch，一个线程已经完成了任务</span></span><br><span class="line">		&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		ExecutorService executorService = Executors.newFixedThreadPool(<span class="number">10</span>);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">21</span>; i++) &#123;</span><br><span class="line">			executorService.submit(demo);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//等待检查</span></span><br><span class="line">		end.await(); <span class="comment">//CountDownLatch使用await方法，要求主线程等待所有10个检查任务全部完成，主线程才能继续执行</span></span><br><span class="line">		<span class="comment">//发射火箭</span></span><br><span class="line">		System.out.println(<span class="string">"Fire"</span>);</span><br><span class="line">		executorService.shutdown();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="循环栅栏：CyclicBarrier"><a href="#循环栅栏：CyclicBarrier" class="headerlink" title="循环栅栏：CyclicBarrier"></a>循环栅栏：CyclicBarrier</h3><p>CyclicBarrier是另一种多线程并发控制工具，和CountDownLatch非常类似，它可以实现线程间的计算等待，但他的功能比CountDowLatch更加复杂且强大。</p>
-<p>Cyclic意为循环，也就是这个计数器可以循环使用过，凑齐一批，计数器就会归零，然后继续凑下一批，而CountDownLatch只能用一次。CyclicBarrier更强大的是可以接受一个barrierActiion作为参数，即计数器技术完成后，系统会执行的动作。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CyclicBarrierDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">final</span> <span class="keyword">int</span> N = <span class="number">10</span>;</span><br><span class="line">		Thread[] allSoldier = <span class="keyword">new</span> Thread[N];</span><br><span class="line">		<span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</span><br><span class="line">		CyclicBarrier cyclicBarrier = <span class="keyword">new</span> CyclicBarrier(N,<span class="keyword">new</span> BarrierRun(flag,N));</span><br><span class="line"></span><br><span class="line">		System.out.println(<span class="string">"```````````````集合```````````````"</span>);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">			System.out.println(<span class="string">"士兵"</span>+i+<span class="string">"报道"</span>);</span><br><span class="line">			allSoldier[i] = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Soldier(<span class="string">"士兵"</span>+i,cyclicBarrier));</span><br><span class="line">			allSoldier[i].start();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Soldier</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">		<span class="keyword">private</span> String soldier;</span><br><span class="line">		<span class="keyword">private</span> <span class="keyword">final</span> CyclicBarrier cyclicBarrier;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="title">Soldier</span><span class="params">(String soldier, CyclicBarrier cyclicBarrier)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.soldier = soldier;</span><br><span class="line">			<span class="keyword">this</span>.cyclicBarrier = cyclicBarrier;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">doWork</span><span class="params">()</span></span>&#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				Thread.sleep(Math.abs(<span class="keyword">new</span> Random().nextInt()%<span class="number">10000</span>));</span><br><span class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println(soldier+<span class="string">":任务完成"</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="comment">//等待所有士兵到齐</span></span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				cyclicBarrier.await();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (BrokenBarrierException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">BarrierRun</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">		<span class="keyword">boolean</span> flag;</span><br><span class="line">		<span class="keyword">int</span> N;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="title">BarrierRun</span><span class="params">(<span class="keyword">boolean</span> flag, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.flag = flag;</span><br><span class="line">			N = n;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="keyword">if</span>(flag)&#123;</span><br><span class="line">				System.out.println(<span class="string">"司令[士兵"</span>+N+<span class="string">"个，任务完成]"</span>);</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				System.out.println(<span class="string">"司令[士兵"</span>+N+<span class="string">"个，集合完毕]"</span>);</span><br><span class="line">				flag = <span class="keyword">true</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="线程阻塞工具-LockSupport"><a href="#线程阻塞工具-LockSupport" class="headerlink" title="线程阻塞工具 LockSupport"></a>线程阻塞工具 LockSupport</h3><p>LockSupport可以在线程的任意位置让线程阻塞。和Thread.suspend()相比，它弥补了在在resume()之前线程不能继续执行的情况。和Object.wait()相比，它不需要先获得某个对象的锁，也不会抛出InterruptedException。</p>
-<p>主要静态方法：</p>
-<ul>
-<li>park</li>
-<li>unpark</li>
-<li>类似的还是有parkNano parkUntil等</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LockSupportDemo</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> Object u = <span class="keyword">new</span> Object();</span><br><span class="line">	<span class="keyword">static</span> ChangeObjectThread t1 = <span class="keyword">new</span> ChangeObjectThread(<span class="string">"t1"</span>);</span><br><span class="line">	<span class="keyword">static</span> ChangeObjectThread t2 = <span class="keyword">new</span> ChangeObjectThread(<span class="string">"t2"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		t1.start();</span><br><span class="line">		Thread.sleep(<span class="number">100</span>);</span><br><span class="line">		t2.start();</span><br><span class="line"></span><br><span class="line">		LockSupport.unpark(t1);</span><br><span class="line">		LockSupport.unpark(t2);</span><br><span class="line"></span><br><span class="line">		t1.join();</span><br><span class="line">		t2.join();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ChangeObjectThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="title">ChangeObjectThread</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">super</span>(name);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="keyword">synchronized</span> (u)&#123;</span><br><span class="line">				System.out.println(<span class="string">"in "</span>+getName());</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们无法保证unpark在park之后执行，但是执行这段代码自始至终可以正常执行，不会因为park方法导致线程永久性的挂起。这是因为LockSupport使用了类似信号量的机制。他为每一个线程准备了一个许可，如果许可是可用状态，park（）函数会立即返回并消费这个许可（<strong>将许可变为不可用</strong>），如果不可用就阻塞。而unpark（）将许可将状态变为可用（和信号量不同的是许可只有一个，不可累加）。所以永远可以顺利结束。</p>
-<p>同时，处于park（）挂起状态的线程不会像suspend那样还给出一个令人费解的Runnable的状态，它非常明确地给出一个WAITING状态，甚至还会标注是park（）引起的。park方法还可以接受一个对象，为当前线程设置阻塞对象，并且该对象会出现在线程Dump中。</p>
-<p>除了定时阻塞功能外，LockSupport还支持中断影响，但是其他的接收中断函数不一样，LockSupport.park()不会抛出InterruptedException，它只会默默的返回。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java并发</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DB</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -271,113 +206,70 @@
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2017/03/14/并发/Java多线程同步控制/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
   
-<nav id="article-nav">
-  
-    <a href="/2017/08/20/DB/事务/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          事务
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/03/05/java基础/java类型信息/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">java类型信息</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
+    
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2017/08/20/DB/事务/" class="archive-article-date">
+  	<time datetime="2017-08-19T16:52:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-20</time>
+</a>
         </div>
-        
-        
-    </div>
-</aside>
-
-
-
+    	 
   
-  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2017/08/20/DB/事务/">事务</a>
+    </h1>
   
 
+        <div class="article-info info-on-right">
+          
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DB</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">事务</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+          
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+        </div>
+        <div class="clearfix"></div>
+    </header>
+  </div>
+</article>
+  
+  
+    </div></section>
   
 
-  
-
-  
+    
 
 
           </div>
@@ -400,9 +292,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,

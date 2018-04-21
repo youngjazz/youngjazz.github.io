@@ -242,6 +242,191 @@
 
 
   
+    <article id="post-DB/索引" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/26/DB/索引/">索引</a>
+    </h1>
+  
+
+        
+        <a href="/2017/09/26/DB/索引/" class="archive-article-date">
+  	<time datetime="2017-09-26T15:44:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>索引（在mysql中也叫key）是存储引擎用语快速找到记录的一种数据结构，这是索引的基本功能。索引队友良好的性能非常关键，尤其是在表中的数据量非常大的时候，这种影响愈发明显。同样，糟糕的索引带来的问题也问题也是非常糟糕的。</p>
+<h3 id="索引基础"><a href="#索引基础" class="headerlink" title="索引基础"></a>索引基础</h3><p>索引可以包含一个列，也可以包含多个列。如果包含多个列，那么列的顺序也十分重要，因为mysql只能高效的使用索引最左侧前缀列。所以使用一个包含两列的索引，和创建两个只包含一个索引的列是大不相同的。</p>
+<h4 id="索引的类型"><a href="#索引的类型" class="headerlink" title="索引的类型"></a>索引的类型</h4><p>索引有很多类型，可以为不同的场景提供更好的性能，在MYSQL中，索引是在存储引擎层而不是服务层实现的。所以不同的存储引擎的索引的工作方式不一样。<br><strong>B-Tree 索引</strong><br>如果没有特别指明，一般说的索引都是B-Tree索引，存储引擎已不同的方式使用B-Tree索引，其性能各有不同，各有优劣。例如，MyISAM使用前缀压缩技术使得索引更小，但InnoDB按照原数据格式进行存储；MyISAM索引听过数据的物理位置引用被索引的行，而InnoDB则根据主键引用被索引的行。<br>B-Tree索引之所以能够加快访问速度，是因为存储引擎不在需要进行全表扫描，取而代之的是从索引的根节点开始搜索，根节点的槽中存放了指向子节点的指针，这些指针实际上定义了子节点的上界和下界，存储引擎根据这些指针向下层进行查找。<br>B-Tree对索引进行<strong>顺序存储</strong>，所以很适合查找<strong>范围数据</strong>。B-Tree索引适合全键值、键值范围或键前缀查找。不适合不是按照从最左侧开始查找。<br>树的深度和表的大小直接相关。<br>因为索引树种的节点是有序的，所以除了按键值查找之外，索引还可以用于查询中的ORDER BY。<br>
+        
+          <a class="article-more-a" href="/2017/09/26/DB/索引/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DB</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/09/26/DB/索引/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-DB/事务" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/20/DB/事务/">事务</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/20/DB/事务/" class="archive-article-date">
+  	<time datetime="2017-08-19T16:52:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一个运行了良好的事务处理系统，必须具备这些特征</p>
+<p>ACID：原子性（atomatic）、一致性（consistency）、隔离性（isolation）和持久性（durability）</p>
+<p>原子性：一个事务必须视为一个不可分割的最小工作单元你，整个事务的所有操作要么全提交成功，要么全失败回滚。对于一个事务来说，不可能只执行其中一部分操作，这就是事务原子性。</p>
+<p>一致性：数据库总是从一个一致性状态转移到另一个一致性状态。比如即使三四句之间系统崩溃，账户系统也不会凭空损失200美元，因为事务没有提交，所以事务中所做的修改也不会保存到数据库中。</p>
+<p>隔离性：通常，一个事务所做的一系列修改在最终提交以前，对其他事务是不可见的。当然这和后面要说的<strong>隔离级别</strong>有关系。</p>
+<p>持久性：一旦事务提交，则其所作的修改就回永久保存到数据库中。但实际上持久性也分很多不同级别。有些持久策略能够提供非常强的安全保障，而有些未必。<br>
+        
+          <a class="article-more-a" href="/2017/08/20/DB/事务/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DB</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">事务</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/20/DB/事务/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-并发/Java多线程同步控制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -523,6 +708,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java并发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DB</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">事务</a>
               </li>
             
             <div class="clearfix"></div>

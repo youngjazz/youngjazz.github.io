@@ -175,7 +175,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="消费者和生产者"><a href="#消费者和生产者" class="headerlink" title="消费者和生产者"></a>消费者和生产者</h2><p>生产者、消费者与Rabbit代理服务器支架创建一条TCP连接，一旦连接打开，应用程序就可以创建一条AMQP信道。信道是建立在“真实的”TCP连接内的虚拟连接。AMQP命令都是通过信道发送出去的。每条信道都会被指派一个唯一ID，发布消息、订阅队列、接受消息都是通过信道完成。</p>
-<p>那为什么不直接通过TCP连接发送AMQP命令呢？那是因为对操作系统来说建立和销毁TCP会话是非常昂贵的，尤其是在高峰期有成百上千的连接，浪费TCP连接，同事系统每秒只能建立这么点连接数是远远满足不了需求的。一条TCP连接，同时保证每个线程的私密性。可以把它想象为光纤，而TCP连接就像电缆。<br>
+<p>那为什么不直接通过TCP连接发送AMQP命令呢？那是因为对操作系统来说建立和销毁TCP会话是非常昂贵的，尤其是在高峰期有成百上千的连接，浪费TCP连接，同事系统每秒只能建立这么点连接数是远远满足不了需求的。一条TCP连接，同时保证每个线程的私密性。可以把它想象为光纤，而TCP连接就像电缆。</p>
+<p><img src="http://p7b5cwgjy.bkt.clouddn.com/AMQP%E4%BF%A1%E9%81%93" alt="AMQP信道和连接"></p>
         
           <a class="article-more-a" href="/2018/04/14/RabbitMQ/RabbitMQ入门/#more">more >></a>
         
@@ -703,19 +704,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java基础</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">DB</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">事务</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java基础</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
               </li>
             
             <div class="clearfix"></div>

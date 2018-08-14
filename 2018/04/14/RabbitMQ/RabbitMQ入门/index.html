@@ -18,7 +18,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://p7b5cwgjy.bkt.clouddn.com/AMQP%E4%BF%A1%E9%81%93">
 <meta property="og:image" content="http://p7b5cwgjy.bkt.clouddn.com/AQMP%E6%A0%88%EF%BC%9A%E4%BA%A4%E6%8D%A2%E5%99%A8%E3%80%81%E7%BB%91%E5%AE%9A%EF%BC%8C%E4%BB%A5%E5%8F%8A%E9%98%9F%E5%88%97.png">
-<meta property="og:updated_time" content="2018-04-21T15:09:46.094Z">
+<meta property="og:updated_time" content="2018-07-08T08:37:20.371Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解RabbitMQ消息通信">
 <meta name="twitter:description" content="消费者和生产者生产者、消费者与Rabbit代理服务器支架创建一条TCP连接，一旦连接打开，应用程序就可以创建一条AMQP信道。信道是建立在“真实的”TCP连接内的虚拟连接。AMQP命令都是通过信道发送出去的。每条信道都会被指派一个唯一ID，发布消息、订阅队列、接受消息都是通过信道完成。 那为什么不直接通过TCP连接发送AMQP命令呢？那是因为对操作系统来说建立和销毁TCP会话是非常昂贵的，尤其是在">
@@ -433,14 +433,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">DB</a>
               </li>
              
@@ -449,11 +441,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java基础</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java基础</a>
+                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
               </li>
             
             <div class="clearfix"></div>

@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>缓存三大问题及解决方案 | Leon&#39; Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="缓存来由随着互联网应用的逐步完善，对于用户体验和系统稳定性的要求也越来越高，为提高系统的qps，目前绝大多数的系统都通过增加缓存这一手段避免过多请求直接直接参与数据库操作而带来系统瓶颈。 缓存问题虽然使用缓存能够带来系统性能一定程度质的提升，但是同时也带来了一些需要注意的问题。 1.缓存穿透缓存穿透是指查询一个缓存不存在的数据，则会直接去数据库进行查询，从系统层面来看就像是直接穿透了缓存到达了DB">
+  <meta name="description" content="缓存来由随着互联网应用的逐步完善，对于用户体验和系统稳定性的要求也越来越高，为提高系统的qps，目前绝大多数的系统都通过增加缓存这一手段避免过多请求直接直接参与数据库操作而带来系统瓶颈。 缓存问题">
 <meta name="keywords" content="缓存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="缓存三大问题及解决方案">
 <meta property="og:url" content="http://yoursite.com/2018/08/15/缓存/缓存三大问题及解决方案/index.html">
 <meta property="og:site_name" content="Leon&#39; Blog">
-<meta property="og:description" content="缓存来由随着互联网应用的逐步完善，对于用户体验和系统稳定性的要求也越来越高，为提高系统的qps，目前绝大多数的系统都通过增加缓存这一手段避免过多请求直接直接参与数据库操作而带来系统瓶颈。 缓存问题虽然使用缓存能够带来系统性能一定程度质的提升，但是同时也带来了一些需要注意的问题。 1.缓存穿透缓存穿透是指查询一个缓存不存在的数据，则会直接去数据库进行查询，从系统层面来看就像是直接穿透了缓存到达了DB">
+<meta property="og:description" content="缓存来由随着互联网应用的逐步完善，对于用户体验和系统稳定性的要求也越来越高，为提高系统的qps，目前绝大多数的系统都通过增加缓存这一手段避免过多请求直接直接参与数据库操作而带来系统瓶颈。 缓存问题">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-08-15T06:06:37.445Z">
+<meta property="og:updated_time" content="2018-08-30T09:23:33.544Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="缓存三大问题及解决方案">
-<meta name="twitter:description" content="缓存来由随着互联网应用的逐步完善，对于用户体验和系统稳定性的要求也越来越高，为提高系统的qps，目前绝大多数的系统都通过增加缓存这一手段避免过多请求直接直接参与数据库操作而带来系统瓶颈。 缓存问题虽然使用缓存能够带来系统性能一定程度质的提升，但是同时也带来了一些需要注意的问题。 1.缓存穿透缓存穿透是指查询一个缓存不存在的数据，则会直接去数据库进行查询，从系统层面来看就像是直接穿透了缓存到达了DB">
+<meta name="twitter:description" content="缓存来由随着互联网应用的逐步完善，对于用户体验和系统稳定性的要求也越来越高，为提高系统的qps，目前绝大多数的系统都通过增加缓存这一手段避免过多请求直接直接参与数据库操作而带来系统瓶颈。 缓存问题">
   
     <link rel="alternative" href="/atom.xml" title="Leon&#39; Blog" type="application/atom+xml">
   
@@ -178,9 +178,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="缓存来由"><a href="#缓存来由" class="headerlink" title="缓存来由"></a>缓存来由</h2><p>随着互联网应用的逐步完善，对于用户体验和系统稳定性的要求也越来越高，为提高系统的qps，目前绝大多数的系统都通过增加缓存这一手段避免过多请求直接直接参与数据库操作而带来系统瓶颈。</p>
-<h2 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h2><p>虽然使用缓存能够带来系统性能一定程度质的提升，但是同时也带来了一些需要注意的问题。</p>
+<h2 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h2><a id="more"></a>
+<p>虽然使用缓存能够带来系统性能一定程度质的提升，但是同时也带来了一些需要注意的问题。</p>
 <h3 id="1-缓存穿透"><a href="#1-缓存穿透" class="headerlink" title="1.缓存穿透"></a>1.缓存穿透</h3><p>缓存穿透是指查询一个缓存不存在的数据，则会直接去数据库进行查询，从系统层面来看就像是直接穿透了缓存到达了DB，故成为缓存穿透。没有了缓存层的保护，查询这种一定不存在的数据对于系统来说是一种危险，如果有人恶意查询这种一定不存在的数据来频繁请求系统个， 所有请求都会打到很有可能导致系统故障。</p>
-<a id="more"></a>
 <h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>缓存穿透业内解决方案已经成熟，主要常用的的方案有一下几种：</p>
 <ul>
 <li><strong>空值缓存</strong>: 一种比较简单的解决方案，在第一次查询完不存在的数据后，将该key与对应的空值也放入缓存中，只不过设定的时间较短，例如几分钟，这样可以应对较短时间的大量该key的攻击，设置较短时间是因为该值与业务可能无关，存在意义不大，没必要长时间存储。</li>
@@ -289,6 +289,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2018/09/17/JVM/ClassLoader揭秘/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          ClassLoader揭秘
+        
+      </div>
+    </a>
   
   
     <a href="/2018/06/15/架构/架构设计之二-复杂度来源/" id="article-nav-older" class="article-nav-link-wrap">
@@ -418,11 +427,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DB</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">事务</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -434,15 +439,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DB</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">事务</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java并发</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
               </li>
             
             <div class="clearfix"></div>

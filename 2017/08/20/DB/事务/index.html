@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>事务 | Leon&#39; Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一个运行了良好的事务处理系统，必须具备这些特征 ACID：原子性（atomatic）、一致性（consistency）、隔离性（isolation）和持久性（durability） 原子性：一个事务必须视为一个不可分割的最小工作单元你，整个事务的所有操作要么全提交成功，要么全失败回滚。对于一个事务来说，不可能只执行其中一部分操作，这就是事务原子性。 一致性：数据库总是从一个一致性状态转移到另一个一">
+  <meta name="description" content="一个运行了良好的事务处理系统，必须具备这些特征 ACID：原子性（atomatic）、一致性（consistency）、隔离性（isolation）和持久性（durability）">
 <meta name="keywords" content="DB,事务">
 <meta property="og:type" content="article">
 <meta property="og:title" content="事务">
 <meta property="og:url" content="http://yoursite.com/2017/08/20/DB/事务/index.html">
 <meta property="og:site_name" content="Leon&#39; Blog">
-<meta property="og:description" content="一个运行了良好的事务处理系统，必须具备这些特征 ACID：原子性（atomatic）、一致性（consistency）、隔离性（isolation）和持久性（durability） 原子性：一个事务必须视为一个不可分割的最小工作单元你，整个事务的所有操作要么全提交成功，要么全失败回滚。对于一个事务来说，不可能只执行其中一部分操作，这就是事务原子性。 一致性：数据库总是从一个一致性状态转移到另一个一">
+<meta property="og:description" content="一个运行了良好的事务处理系统，必须具备这些特征 ACID：原子性（atomatic）、一致性（consistency）、隔离性（isolation）和持久性（durability）">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-20T05:01:54.007Z">
+<meta property="og:updated_time" content="2018-08-30T09:22:21.550Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="事务">
-<meta name="twitter:description" content="一个运行了良好的事务处理系统，必须具备这些特征 ACID：原子性（atomatic）、一致性（consistency）、隔离性（isolation）和持久性（durability） 原子性：一个事务必须视为一个不可分割的最小工作单元你，整个事务的所有操作要么全提交成功，要么全失败回滚。对于一个事务来说，不可能只执行其中一部分操作，这就是事务原子性。 一致性：数据库总是从一个一致性状态转移到另一个一">
+<meta name="twitter:description" content="一个运行了良好的事务处理系统，必须具备这些特征 ACID：原子性（atomatic）、一致性（consistency）、隔离性（isolation）和持久性（durability）">
   
     <link rel="alternative" href="/atom.xml" title="Leon&#39; Blog" type="application/atom+xml">
   
@@ -179,10 +179,11 @@
       
         <p>一个运行了良好的事务处理系统，必须具备这些特征</p>
 <p>ACID：原子性（atomatic）、一致性（consistency）、隔离性（isolation）和持久性（durability）</p>
+<a id="more"></a>
 <p>原子性：一个事务必须视为一个不可分割的最小工作单元你，整个事务的所有操作要么全提交成功，要么全失败回滚。对于一个事务来说，不可能只执行其中一部分操作，这就是事务原子性。</p>
 <p>一致性：数据库总是从一个一致性状态转移到另一个一致性状态。比如即使三四句之间系统崩溃，账户系统也不会凭空损失200美元，因为事务没有提交，所以事务中所做的修改也不会保存到数据库中。</p>
 <p>隔离性：通常，一个事务所做的一系列修改在最终提交以前，对其他事务是不可见的。当然这和后面要说的<strong>隔离级别</strong>有关系。</p>
-<p>持久性：一旦事务提交，则其所作的修改就回永久保存到数据库中。但实际上持久性也分很多不同级别。有些持久策略能够提供非常强的安全保障，而有些未必。<br><a id="more"></a></p>
+<p>持久性：一旦事务提交，则其所作的修改就回永久保存到数据库中。但实际上持久性也分很多不同级别。有些持久策略能够提供非常强的安全保障，而有些未必。</p>
 <h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><p>在SQL标准中定义了四种隔离级别，每一种级别规定了一个事务中所做的修改，哪些在事务内核事务间是可见的，哪些是不可见了。<strong>较低级别的隔离通常是可以执行更高的并发</strong>，系统的开销也更低。</p>
 <p>每种存储引擎实现的隔离级别不尽相同。</p>
 <p><strong>READ UNCOMITTED(未提交读)</strong></p>
@@ -471,11 +472,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DB</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">事务</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -487,15 +484,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DB</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">事务</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java并发</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
               </li>
             
             <div class="clearfix"></div>

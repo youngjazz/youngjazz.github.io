@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>索引 | Leon&#39; Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="索引（在mysql中也叫key）是存储引擎用语快速找到记录的一种数据结构，这是索引的基本功能。索引队友良好的性能非常关键，尤其是在表中的数据量非常大的时候，这种影响愈发明显。同样，糟糕的索引带来的问题也问题也是非常糟糕的。 索引基础索引可以包含一个列，也可以包含多个列。如果包含多个列，那么列的顺序也十分重要，因为mysql只能高效的使用索引最左侧前缀列。所以使用一个包含两列的索引，和创建两个只包含">
+  <meta name="description" content="索引（在mysql中也叫key）是存储引擎用语快速找到记录的一种数据结构，这是索引的基本功能。索引队友良好的性能非常关键，尤其是在表中的数据量非常大的时候，这种影响愈发明显。同样，糟糕的索引带来的问题也问题也是非常糟糕的。">
 <meta name="keywords" content="DB">
 <meta property="og:type" content="article">
 <meta property="og:title" content="索引">
 <meta property="og:url" content="http://yoursite.com/2017/09/26/DB/索引/index.html">
 <meta property="og:site_name" content="Leon&#39; Blog">
-<meta property="og:description" content="索引（在mysql中也叫key）是存储引擎用语快速找到记录的一种数据结构，这是索引的基本功能。索引队友良好的性能非常关键，尤其是在表中的数据量非常大的时候，这种影响愈发明显。同样，糟糕的索引带来的问题也问题也是非常糟糕的。 索引基础索引可以包含一个列，也可以包含多个列。如果包含多个列，那么列的顺序也十分重要，因为mysql只能高效的使用索引最左侧前缀列。所以使用一个包含两列的索引，和创建两个只包含">
+<meta property="og:description" content="索引（在mysql中也叫key）是存储引擎用语快速找到记录的一种数据结构，这是索引的基本功能。索引队友良好的性能非常关键，尤其是在表中的数据量非常大的时候，这种影响愈发明显。同样，糟糕的索引带来的问题也问题也是非常糟糕的。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://owmee6oah.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-09-21%2015.59.21.png">
-<meta property="og:updated_time" content="2018-04-20T04:57:22.567Z">
+<meta property="og:updated_time" content="2018-08-30T09:22:31.746Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="索引">
-<meta name="twitter:description" content="索引（在mysql中也叫key）是存储引擎用语快速找到记录的一种数据结构，这是索引的基本功能。索引队友良好的性能非常关键，尤其是在表中的数据量非常大的时候，这种影响愈发明显。同样，糟糕的索引带来的问题也问题也是非常糟糕的。 索引基础索引可以包含一个列，也可以包含多个列。如果包含多个列，那么列的顺序也十分重要，因为mysql只能高效的使用索引最左侧前缀列。所以使用一个包含两列的索引，和创建两个只包含">
+<meta name="twitter:description" content="索引（在mysql中也叫key）是存储引擎用语快速找到记录的一种数据结构，这是索引的基本功能。索引队友良好的性能非常关键，尤其是在表中的数据量非常大的时候，这种影响愈发明显。同样，糟糕的索引带来的问题也问题也是非常糟糕的。">
 <meta name="twitter:image" content="http://owmee6oah.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-09-21%2015.59.21.png">
   
     <link rel="alternative" href="/atom.xml" title="Leon&#39; Blog" type="application/atom+xml">
@@ -180,8 +180,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>索引（在mysql中也叫key）是存储引擎用语快速找到记录的一种数据结构，这是索引的基本功能。索引队友良好的性能非常关键，尤其是在表中的数据量非常大的时候，这种影响愈发明显。同样，糟糕的索引带来的问题也问题也是非常糟糕的。</p>
+<a id="more"></a>
 <h3 id="索引基础"><a href="#索引基础" class="headerlink" title="索引基础"></a>索引基础</h3><p>索引可以包含一个列，也可以包含多个列。如果包含多个列，那么列的顺序也十分重要，因为mysql只能高效的使用索引最左侧前缀列。所以使用一个包含两列的索引，和创建两个只包含一个索引的列是大不相同的。</p>
-<h4 id="索引的类型"><a href="#索引的类型" class="headerlink" title="索引的类型"></a>索引的类型</h4><p>索引有很多类型，可以为不同的场景提供更好的性能，在MYSQL中，索引是在存储引擎层而不是服务层实现的。所以不同的存储引擎的索引的工作方式不一样。<br><strong>B-Tree 索引</strong><br>如果没有特别指明，一般说的索引都是B-Tree索引，存储引擎已不同的方式使用B-Tree索引，其性能各有不同，各有优劣。例如，MyISAM使用前缀压缩技术使得索引更小，但InnoDB按照原数据格式进行存储；MyISAM索引听过数据的物理位置引用被索引的行，而InnoDB则根据主键引用被索引的行。<br>B-Tree索引之所以能够加快访问速度，是因为存储引擎不在需要进行全表扫描，取而代之的是从索引的根节点开始搜索，根节点的槽中存放了指向子节点的指针，这些指针实际上定义了子节点的上界和下界，存储引擎根据这些指针向下层进行查找。<br>B-Tree对索引进行<strong>顺序存储</strong>，所以很适合查找<strong>范围数据</strong>。B-Tree索引适合全键值、键值范围或键前缀查找。不适合不是按照从最左侧开始查找。<br>树的深度和表的大小直接相关。<br>因为索引树种的节点是有序的，所以除了按键值查找之外，索引还可以用于查询中的ORDER BY。<br><a id="more"></a></p>
+<h4 id="索引的类型"><a href="#索引的类型" class="headerlink" title="索引的类型"></a>索引的类型</h4><p>索引有很多类型，可以为不同的场景提供更好的性能，在MYSQL中，索引是在存储引擎层而不是服务层实现的。所以不同的存储引擎的索引的工作方式不一样。<br><strong>B-Tree 索引</strong><br>如果没有特别指明，一般说的索引都是B-Tree索引，存储引擎已不同的方式使用B-Tree索引，其性能各有不同，各有优劣。例如，MyISAM使用前缀压缩技术使得索引更小，但InnoDB按照原数据格式进行存储；MyISAM索引听过数据的物理位置引用被索引的行，而InnoDB则根据主键引用被索引的行。<br>B-Tree索引之所以能够加快访问速度，是因为存储引擎不在需要进行全表扫描，取而代之的是从索引的根节点开始搜索，根节点的槽中存放了指向子节点的指针，这些指针实际上定义了子节点的上界和下界，存储引擎根据这些指针向下层进行查找。<br>B-Tree对索引进行<strong>顺序存储</strong>，所以很适合查找<strong>范围数据</strong>。B-Tree索引适合全键值、键值范围或键前缀查找。不适合不是按照从最左侧开始查找。<br>树的深度和表的大小直接相关。<br>因为索引树种的节点是有序的，所以除了按键值查找之外，索引还可以用于查询中的ORDER BY。</p>
 <p><strong>哈希索引</strong><br>hash index基于哈希表实现，只有精确匹配索引所有列才的查询才是有效的。对于每一行数据，存储引擎都会对所有的索引列计算一个hash code，哈希索引将所有的hash code存储在索引中，同事在哈希表中存储指向每个数据行的指针。<br>在MYSQL中，只有Memory引擎显示支持哈希索引，这也是Memory引擎表的默认索引类型，Memory引擎同时也支持B-Tree索引，也支持非唯一哈希索引（链表指向同一个哈希条目）<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> test_hash(</span><br><span class="line">	fname <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	lname <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	<span class="keyword">key</span> <span class="keyword">using</span> <span class="keyword">hash</span>(fname)</span><br><span class="line">) <span class="keyword">engine</span>=<span class="keyword">memory</span>;</span><br></pre></td></tr></table></figure></p>
 <p>因为索引本身只存储了对应的哈希值和指针，所以索引结构十分紧凑，这也让哈希索引查找速度非常快。然而它也有限制的：</p>
 <ul>
@@ -476,11 +477,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">DB</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">事务</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -492,15 +489,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DB</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">事务</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java并发</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+                <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
               </li>
             
             <div class="clearfix"></div>

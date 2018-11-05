@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>JVM-内存分配 | Leon&#39; Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="JVM-内存分配内存分配策略：  对象优先分配到Eden 大对象直接到老年代 长期存活的对象直接分配到老年代 空间分配担保 动态对象年龄判断  Eden区域12345678910111213141516public class EdenTest &amp;#123;    public static void main(String[] args) &amp;#123;        byte[] m = new">
+  <meta name="description" content="内存分配策略：  对象优先分配到Eden 大对象直接到老年代 长期存活的对象直接分配到老年代 空间分配担保 动态对象年龄判断">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM-内存分配">
 <meta property="og:url" content="http://yoursite.com/2018/10/14/JVM/JVM-内存分配/index.html">
 <meta property="og:site_name" content="Leon&#39; Blog">
-<meta property="og:description" content="JVM-内存分配内存分配策略：  对象优先分配到Eden 大对象直接到老年代 长期存活的对象直接分配到老年代 空间分配担保 动态对象年龄判断  Eden区域12345678910111213141516public class EdenTest &amp;#123;    public static void main(String[] args) &amp;#123;        byte[] m = new">
+<meta property="og:description" content="内存分配策略：  对象优先分配到Eden 大对象直接到老年代 长期存活的对象直接分配到老年代 空间分配担保 动态对象年龄判断">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-29T10:51:26.129Z">
+<meta property="og:updated_time" content="2018-10-29T11:31:03.649Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM-内存分配">
-<meta name="twitter:description" content="JVM-内存分配内存分配策略：  对象优先分配到Eden 大对象直接到老年代 长期存活的对象直接分配到老年代 空间分配担保 动态对象年龄判断  Eden区域12345678910111213141516public class EdenTest &amp;#123;    public static void main(String[] args) &amp;#123;        byte[] m = new">
+<meta name="twitter:description" content="内存分配策略：  对象优先分配到Eden 大对象直接到老年代 长期存活的对象直接分配到老年代 空间分配担保 动态对象年龄判断">
   
     <link rel="alternative" href="/atom.xml" title="Leon&#39; Blog" type="application/atom+xml">
   
@@ -177,7 +177,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="JVM-内存分配"><a href="#JVM-内存分配" class="headerlink" title="JVM-内存分配"></a>JVM-内存分配</h1><p>内存分配策略：</p>
+        <p>内存分配策略：</p>
 <ol>
 <li>对象优先分配到Eden</li>
 <li>大对象直接到老年代</li>
@@ -185,6 +185,7 @@
 <li>空间分配担保</li>
 <li>动态对象年龄判断</li>
 </ol>
+<a id="more"></a>
 <h2 id="Eden区域"><a href="#Eden区域" class="headerlink" title="Eden区域"></a>Eden区域</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EdenTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span>[] m = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">4</span> * <span class="number">1024</span> * <span class="number">1024</span>];</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Heap</span><br><span class="line"> PSYoungGen      total <span class="number">38400</span>K, used <span class="number">7435</span>K [<span class="number">0x0000000795580000</span>, <span class="number">0x0000000798000000</span>, <span class="number">0x00000007c0000000</span>)</span><br><span class="line">  eden space <span class="number">33280</span>K, <span class="number">22</span>% used [<span class="number">0x0000000795580000</span>,<span class="number">0x0000000795cc2ea8</span>,<span class="number">0x0000000797600000</span>)</span><br><span class="line">  from space <span class="number">5120</span>K, <span class="number">0</span>% used [<span class="number">0x0000000797b00000</span>,<span class="number">0x0000000797b00000</span>,<span class="number">0x0000000798000000</span>)</span><br><span class="line">  to   space <span class="number">5120</span>K, <span class="number">0</span>% used [<span class="number">0x0000000797600000</span>,<span class="number">0x0000000797600000</span>,<span class="number">0x0000000797b00000</span>)</span><br><span class="line"> ParOldGen       total <span class="number">87552</span>K, used <span class="number">0</span>K [<span class="number">0x0000000740000000</span>, <span class="number">0x0000000745580000</span>, <span class="number">0x0000000795580000</span>)</span><br><span class="line">  object space <span class="number">87552</span>K, <span class="number">0</span>% used [<span class="number">0x0000000740000000</span>,<span class="number">0x0000000740000000</span>,<span class="number">0x0000000745580000</span>)</span><br><span class="line"> Metaspace       used <span class="number">3309</span>K, capacity <span class="number">4496</span>K, committed <span class="number">4864</span>K, reserved <span class="number">1056768</span>K</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">space</span>    <span class="title">used</span> 369<span class="title">K</span>, <span class="title">capacity</span> 388<span class="title">K</span>, <span class="title">committed</span> 512<span class="title">K</span>, <span class="title">reserved</span> 1048576<span class="title">K</span></span></span><br></pre></td></tr></table></figure>
 <p>通过GCDetail可以看出对象确实是<strong>优先在Eden区进行分配</strong>。</p>
 <p>修改虚拟参数 <code>-verbose:gc -XX:+PrintGCDetails -XX:+UseSerialGC</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Heap</span><br><span class="line"> def new generation   total 39296K, used 8289K [0x0000000740000000, 0x0000000742aa0000, 0x000000076aaa0000)</span><br><span class="line">  eden space 34944K,  23% used [0x0000000740000000, 0x00000007408187c8, 0x0000000742220000)</span><br><span class="line">  from space 4352K,   0% used [0x0000000742220000, 0x0000000742220000, 0x0000000742660000)</span><br><span class="line">  to   space 4352K,   0% used [0x0000000742660000, 0x0000000742660000, 0x0000000742aa0000)</span><br><span class="line"> tenured generation   total 87424K, used 0K [0x000000076aaa0000, 0x0000000770000000, 0x00000007c0000000)</span><br><span class="line">   the space 87424K,   0% used [0x000000076aaa0000, 0x000000076aaa0000, 0x000000076aaa0200, 0x0000000770000000)</span><br><span class="line"> Metaspace       used 3266K, capacity 4496K, committed 4864K, reserved 1056768K</span><br><span class="line">  class space    used 364K, capacity 388K, committed 512K, reserved 1048576K</span><br></pre></td></tr></table></figure></p>
@@ -437,15 +438,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java基础</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -457,15 +458,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
               </li>
             
             <div class="clearfix"></div>

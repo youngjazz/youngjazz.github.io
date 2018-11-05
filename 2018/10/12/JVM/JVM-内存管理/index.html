@@ -8,20 +8,17 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>JVM-内存管理 | Leon&#39; Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Java内存区域-程序计数器 每个线程独有的一块比较小的内存空间，用于记录当前线程所执行的字节码的行号 如果线程运行的是java方法，这个计数器记录的是正在执行的虚拟机字节指令的地址，如果正在执行的是native方法，这个计数器的值为underfinded 此区域是唯一一个在java虚拟机规范中没有规定任何OutOfMemory情况的区域  Java内存区域-Java虚拟机栈 虚拟机栈描述的是J">
-<meta name="keywords" content="JVM">
+  <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM-内存管理">
 <meta property="og:url" content="http://yoursite.com/2018/10/12/JVM/JVM-内存管理/index.html">
 <meta property="og:site_name" content="Leon&#39; Blog">
-<meta property="og:description" content="Java内存区域-程序计数器 每个线程独有的一块比较小的内存空间，用于记录当前线程所执行的字节码的行号 如果线程运行的是java方法，这个计数器记录的是正在执行的虚拟机字节指令的地址，如果正在执行的是native方法，这个计数器的值为underfinded 此区域是唯一一个在java虚拟机规范中没有规定任何OutOfMemory情况的区域  Java内存区域-Java虚拟机栈 虚拟机栈描述的是J">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://p7b5cwgjy.bkt.clouddn.com/15393237795977.jpg">
 <meta property="og:image" content="http://p7b5cwgjy.bkt.clouddn.com/15393577425064.jpg">
-<meta property="og:updated_time" content="2018-10-29T10:43:46.791Z">
+<meta property="og:updated_time" content="2018-10-30T04:01:05.675Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM-内存管理">
-<meta name="twitter:description" content="Java内存区域-程序计数器 每个线程独有的一块比较小的内存空间，用于记录当前线程所执行的字节码的行号 如果线程运行的是java方法，这个计数器记录的是正在执行的虚拟机字节指令的地址，如果正在执行的是native方法，这个计数器的值为underfinded 此区域是唯一一个在java虚拟机规范中没有规定任何OutOfMemory情况的区域  Java内存区域-Java虚拟机栈 虚拟机栈描述的是J">
 <meta name="twitter:image" content="http://p7b5cwgjy.bkt.clouddn.com/15393237795977.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Leon&#39; Blog" type="application/atom+xml">
@@ -181,6 +178,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><img src="http://p7b5cwgjy.bkt.clouddn.com/15393237795977.jpg" alt="-w713"></p>
+<a id="more"></a>
 <h2 id="Java内存区域-程序计数器"><a href="#Java内存区域-程序计数器" class="headerlink" title="Java内存区域-程序计数器"></a>Java内存区域-程序计数器</h2><ul>
 <li>每个线程独有的一块比较小的内存空间，用于记录当前线程所执行的字节码的行号</li>
 <li>如果线程运行的是java方法，这个计数器记录的是正在执行的虚拟机字节指令的地址，如果正在执行的是native方法，这个计数器的值为underfinded</li>
@@ -487,15 +485,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java基础</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -507,15 +505,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
               </li>
             
             <div class="clearfix"></div>

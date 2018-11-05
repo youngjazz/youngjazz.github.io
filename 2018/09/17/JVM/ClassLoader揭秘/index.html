@@ -17,7 +17,7 @@
 <meta property="og:description" content="什么是Classloader一个Java程序要想运行起来，首先需要经过编译成.class文件，然后创建一个环境（JVM）来加载字节码文件到内存中运行，而.class文件是怎么加载到JVM中去的呢？这就是Java Classloader做的事情了。 什么时候加载？  new 操作 Class.forName(“包路径+类名”) Class.forName(“包路径+类名”, classloader)">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://p7b5cwgjy.bkt.clouddn.com/%E4%B8%89%E7%A7%8D%E5%8A%A0%E8%BD%BD%E5%99%A8%E8%81%94%E7%B3%BB">
-<meta property="og:updated_time" content="2018-09-20T11:30:40.274Z">
+<meta property="og:updated_time" content="2018-10-30T04:01:35.562Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ClassLoader揭秘">
 <meta name="twitter:description" content="什么是Classloader一个Java程序要想运行起来，首先需要经过编译成.class文件，然后创建一个环境（JVM）来加载字节码文件到内存中运行，而.class文件是怎么加载到JVM中去的呢？这就是Java Classloader做的事情了。 什么时候加载？  new 操作 Class.forName(“包路径+类名”) Class.forName(“包路径+类名”, classloader)">
@@ -188,6 +188,7 @@
 <li>classloader.loadclass(“包路径+类名”)</li>
 </ul>
 <p>以上操作会触发类加载器去加载对应的路径去查找*.class, 并创建Class对象。</p>
+<a id="more"></a>
 <h2 id="Java自带的Classloader"><a href="#Java自带的Classloader" class="headerlink" title="Java自带的Classloader"></a>Java自带的Classloader</h2><h3 id="BootstrapClassLoader"><a href="#BootstrapClassLoader" class="headerlink" title="BootstrapClassLoader"></a>BootstrapClassLoader</h3><p>引导类加载器，又称启动类加载器，是最顶层的加载器，主要用来加载Java核心类，比如resouce.jar, rt.jar, charset.jar等，Sun的JVM中，执行java的命令使用-Xbootclasspath选项或是用-D选项指定sun.boot.class.path系统属性值可以指定附加的类，他不是java.lang.ClassLoader的子类，而是JVM自身实现的该类C语言实现，Java程序访问不到该加载器。通过下面代码可以查看该加载器加载了哪些jar包</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">    URL[] urLs = Launcher.getBootstrapClassPath().getURLs();</span><br><span class="line">    Arrays.stream(urLs).forEach(System.out::println);</span><br><span class="line">&#125;&#125;</span><br></pre></td></tr></table></figure>
 <p>执行结果：</p>
@@ -451,15 +452,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java基础</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -471,15 +472,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
               </li>
             
             <div class="clearfix"></div>

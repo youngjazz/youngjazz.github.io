@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>JVM-垃圾回收 | Leon&#39; Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="JVM-垃圾回收 如何判定对象为垃圾对象 引用计数法 可达性分析   如何回收 回收策略 标记-清楚算法 复制算法 标记-整理算法 分代收集算法   垃圾回收器 Serial Parnew Cms G1     何时回收  判定垃圾对象引用计数法在对象中添加一个引用计数器，当有地方引用到这个对象的时候计数器加1，引用失效时计数器减1。简单、高效，但是回收手机循环引用垃圾，现有垃圾回收器基本不采用这">
+  <meta name="description" content="如何判定对象为垃圾对象 引用计数法 可达性分析   如何回收 回收策略 标记-清楚算法 复制算法 标记-整理算法 分代收集算法   垃圾回收器 Serial Parnew Cms G1     何时回收">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM-垃圾回收">
 <meta property="og:url" content="http://yoursite.com/2018/10/29/JVM/JVM-垃圾回收/index.html">
 <meta property="og:site_name" content="Leon&#39; Blog">
-<meta property="og:description" content="JVM-垃圾回收 如何判定对象为垃圾对象 引用计数法 可达性分析   如何回收 回收策略 标记-清楚算法 复制算法 标记-整理算法 分代收集算法   垃圾回收器 Serial Parnew Cms G1     何时回收  判定垃圾对象引用计数法在对象中添加一个引用计数器，当有地方引用到这个对象的时候计数器加1，引用失效时计数器减1。简单、高效，但是回收手机循环引用垃圾，现有垃圾回收器基本不采用这">
+<meta property="og:description" content="如何判定对象为垃圾对象 引用计数法 可达性分析   如何回收 回收策略 标记-清楚算法 复制算法 标记-整理算法 分代收集算法   垃圾回收器 Serial Parnew Cms G1     何时回收">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-29T10:49:31.729Z">
+<meta property="og:updated_time" content="2018-10-30T03:59:47.175Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM-垃圾回收">
-<meta name="twitter:description" content="JVM-垃圾回收 如何判定对象为垃圾对象 引用计数法 可达性分析   如何回收 回收策略 标记-清楚算法 复制算法 标记-整理算法 分代收集算法   垃圾回收器 Serial Parnew Cms G1     何时回收  判定垃圾对象引用计数法在对象中添加一个引用计数器，当有地方引用到这个对象的时候计数器加1，引用失效时计数器减1。简单、高效，但是回收手机循环引用垃圾，现有垃圾回收器基本不采用这">
+<meta name="twitter:description" content="如何判定对象为垃圾对象 引用计数法 可达性分析   如何回收 回收策略 标记-清楚算法 复制算法 标记-整理算法 分代收集算法   垃圾回收器 Serial Parnew Cms G1     何时回收">
   
     <link rel="alternative" href="/atom.xml" title="Leon&#39; Blog" type="application/atom+xml">
   
@@ -176,7 +176,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="JVM-垃圾回收"><a href="#JVM-垃圾回收" class="headerlink" title="JVM-垃圾回收"></a>JVM-垃圾回收</h1><ul>
+        <ul>
 <li>如何判定对象为垃圾对象<ul>
 <li>引用计数法</li>
 <li>可达性分析</li>
@@ -201,6 +201,7 @@
 </li>
 <li>何时回收</li>
 </ul>
+<a id="more"></a>
 <h2 id="判定垃圾对象"><a href="#判定垃圾对象" class="headerlink" title="判定垃圾对象"></a>判定垃圾对象</h2><h3 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h3><p>在对象中添加一个引用计数器，当有地方引用到这个对象的时候计数器加1，引用失效时计数器减1。简单、高效，但是回收手机循环引用垃圾，现有垃圾回收器基本不采用这种方法。<br>可以通过添加参数，来查看程序垃圾回收过程<br>-verbose:gc<br>-XX:+PrintGCDetails</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FirstGCDemo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Object instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FirstGCDemo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span>[] m = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">20</span> * <span class="number">1024</span> * <span class="number">1024</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        FirstGCDemo f1 = <span class="keyword">new</span> FirstGCDemo();</span><br><span class="line">        FirstGCDemo f2 = <span class="keyword">new</span> FirstGCDemo();</span><br><span class="line"></span><br><span class="line">        f1.instance = f2;</span><br><span class="line">        f2.instance = f1;</span><br><span class="line"></span><br><span class="line">        System.gc();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="可达性分析法"><a href="#可达性分析法" class="headerlink" title="可达性分析法"></a>可达性分析法</h3><p>通过一系列名为GC Roots的对象作为起始点，从这些节点开始向下搜索，搜索所走过的路径称为引用链(Reference Chain)，当一个对象到GC Roots没有任何引用链相连时，则证明此对象是不可用的，将会被判断为可回收对象。<br>一般情况下，如下对象可作为GC Roots：<br>1.虚拟机栈（栈帧中的本地变量表）中引用的对象<br>2.方法区中累的静态属性引用的对象<br>3.方法区中常量引用的对象<br>4.本地方法栈中JNI（Native方法）的可引用对象</p>
@@ -487,15 +488,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java基础</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -507,15 +508,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
               </li>
             
             <div class="clearfix"></div>

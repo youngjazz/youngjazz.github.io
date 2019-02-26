@@ -154,30 +154,47 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-DB/索引" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Docker/Docker" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/26/DB/索引/">索引</a>
-    </h1>
-  
-
-        
-        <a href="/2017/09/26/DB/索引/" class="archive-article-date">
-  	<time datetime="2017-09-26T15:44:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-26</time>
-</a>
-        
-      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>索引（在mysql中也叫key）是存储引擎用语快速找到记录的一种数据结构，这是索引的基本功能。索引队友良好的性能非常关键，尤其是在表中的数据量非常大的时候，这种影响愈发明显。同样，糟糕的索引带来的问题也问题也是非常糟糕的。</p>
-        
-          <a class="article-more-a" href="/2017/09/26/DB/索引/#more">more >></a>
-        
+        <h2 id="centos7-安装-docker"><a href="#centos7-安装-docker" class="headerlink" title="centos7 安装 docker"></a>centos7 安装 docker</h2><ul>
+<li>一键安装 curl -sSL <a href="https://get.docker.com/" target="_blank" rel="noopener">https://get.docker.com/</a> | sh</li>
+<li>or <a href="https://www.cnblogs.com/wq3435/p/6479768.html" target="_blank" rel="noopener">https://www.cnblogs.com/wq3435/p/6479768.html</a></li>
+</ul>
+<h2 id="启动docker"><a href="#启动docker" class="headerlink" title="启动docker"></a>启动docker</h2><p><code>systemctl start docker</code></p>
+<h2 id="docker常用操作"><a href="#docker常用操作" class="headerlink" title="docker常用操作"></a>docker常用操作</h2><h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><blockquote>
+<p>查看所有容器</p>
+</blockquote>
+<p><code>docker ps -a</code></p>
+<blockquote>
+<p>查看运行中的容器</p>
+</blockquote>
+<p><code>docker ps</code></p>
+<blockquote>
+<p>停止容器</p>
+</blockquote>
+<p><code>docker stop goofy_easley</code></p>
+<blockquote>
+<p>启动容器</p>
+</blockquote>
+<p><code>docker start goofy_easley</code></p>
+<blockquote>
+<p>进入容器</p>
+</blockquote>
+<p><code>docker exec -it 5ecf2637f10b /bin/sh</code></p>
+<blockquote>
+<p>退出容器</p>
+</blockquote>
+<p><code>exit</code></p>
+<h3 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h3><blockquote>
+<p>删除镜像</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br><span class="line">docker rmi e38bc07ac18e</span><br></pre></td></tr></table></figure>
+<p>前提是没有容器使用该镜像，如果占用了需要先删除容器，然后删除镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br><span class="line">docker rm 70cdf9df895e</span><br></pre></td></tr></table></figure>
+
       
 
       
@@ -185,33 +202,11 @@
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DB</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/09/26/DB/索引/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/11/06/Docker/Docker/">展开全文 >></a>
         </p>
       
 
@@ -241,31 +236,31 @@
 
 
   
-    <article id="post-DB/事务" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-HTTP协议/HTTP" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/20/DB/事务/">事务</a>
-    </h1>
-  
-
-        
-        <a href="/2017/08/20/DB/事务/" class="archive-article-date">
-  	<time datetime="2017-08-19T16:52:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-20</time>
-</a>
-        
-      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>一个运行了良好的事务处理系统，必须具备这些特征</p>
-<p>ACID：原子性（atomatic）、一致性（consistency）、隔离性（isolation）和持久性（durability）</p>
-        
-          <a class="article-more-a" href="/2017/08/20/DB/事务/#more">more >></a>
-        
+        <h1 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h1><p> 浏览器输入URL后HTTP请求返回的完整过程<br> <img src="http://p7b5cwgjy.bkt.clouddn.com/15405451264177.jpg" alt=""></p>
+<h1 id="HTTP协议基础及发展史"><a href="#HTTP协议基础及发展史" class="headerlink" title="HTTP协议基础及发展史"></a>HTTP协议基础及发展史</h1><h2 id="5层模型"><a href="#5层模型" class="headerlink" title="5层模型"></a>5层模型</h2><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15405454020075.jpg" alt=""></p>
+<h3 id="低三层"><a href="#低三层" class="headerlink" title="低三层"></a>低三层</h3><p>物理层：定义物理设备如何传输数据<br>数据链路层：在通信的实体间建立数据链路连接<br>网络层：为数据在结点之间传输创建逻辑链路</p>
+<h3 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h3><p>向用户提供可靠地端到端（End-to-End）服务<br>传输层向高层屏蔽了下层数据通信的细节</p>
+<h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><p>为应用软件提供很多服务<br>构建于TCP协议之上<br>屏蔽网络传输相关细节</p>
+<h2 id="HTTP-协议发展史"><a href="#HTTP-协议发展史" class="headerlink" title="HTTP 协议发展史"></a>HTTP 协议发展史</h2><h3 id="HTTP-0-9"><a href="#HTTP-0-9" class="headerlink" title="HTTP/0.9"></a>HTTP/0.9</h3><p>只有一个GET请求<br>没有HEADER等描述数据的信息<br>服务器发送完毕，就关闭TCP连接</p>
+<h3 id="hTTP-1-0"><a href="#hTTP-1-0" class="headerlink" title="hTTP/1.0"></a>hTTP/1.0</h3><p>增加了 POST、PUT、HEADER等命令<br>增加了status code和header等内容<br>多字符集支持、多部分发送、权限、缓存等</p>
+<h3 id="hTTP-1-1"><a href="#hTTP-1-1" class="headerlink" title="hTTP/1.1"></a>hTTP/1.1</h3><p>支持了持久连接<br>pipeline<br>增加post和其他一些命令</p>
+<h3 id="HTTP2"><a href="#HTTP2" class="headerlink" title="HTTP2"></a>HTTP2</h3><p>所有数据是以二进制传输<br>同一个连接发送的多个请求不在需要按顺序来<br>头部信息压缩以及推送等提高效率的功能<br>推送</p>
+<p>HTTP2是主要解决了http1.1性能低下的问题</p>
+<h2 id="HTTP三次握手"><a href="#HTTP三次握手" class="headerlink" title="HTTP三次握手"></a>HTTP三次握手</h2><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15405471363731.jpg" alt=""></p>
+<h2 id="URI-URL-URN"><a href="#URI-URL-URN" class="headerlink" title="URI URL URN"></a>URI URL URN</h2><p>URI: Uniform Resource Identifier 统一资源标识符<br>用来唯一的标识互联网上的资源<br>包括了URL和URN  </p>
+<p>URL：Uniform Resource Locator 统一资源定位器</p>
+<p>URN：永久统一资源定位符</p>
+<h2 id="HTTP报文格式"><a href="#HTTP报文格式" class="headerlink" title="HTTP报文格式"></a>HTTP报文格式</h2><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15407731035602.jpg" alt=""></p>
+<p>http code：定义服务器对请求处理的结果<br>各个区间的code有各自的语义<br>好的http服务可以通过code判断结果的</p>
+<h3 id="创建一个简单的server"><a href="#创建一个简单的server" class="headerlink" title="创建一个简单的server"></a>创建一个简单的server</h3><p>这里我们使用node<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const http = require(&apos;http&apos;)</span><br><span class="line"></span><br><span class="line">http.createServer(function(request, response)&#123;</span><br><span class="line">    console.log(&apos;request come&apos;, request.url)</span><br><span class="line"></span><br><span class="line">    response.end(&apos;hello&apos;)</span><br><span class="line">&#125;).listen(8888)</span><br><span class="line"></span><br><span class="line">console.log(&apos;server listening 8888&apos;)</span><br></pre></td></tr></table></figure></p>
+<h3 id="http-client"><a href="#http-client" class="headerlink" title="http client"></a>http client</h3><p>浏览器、 curl、 爬虫</p>
+<p>使用curl观察http请求响应的详细信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">zhangyangs-MacBook-Pro:Desktop leon$ curl -v baidu.com</span><br><span class="line">* Rebuilt URL to: baidu.com/</span><br><span class="line">*   Trying 220.181.57.216...</span><br><span class="line">* TCP_NODELAY set</span><br><span class="line">* Connected to baidu.com (220.181.57.216) port 80 (#0)</span><br><span class="line">&gt; GET / HTTP/1.1</span><br><span class="line">&gt; Host: baidu.com</span><br><span class="line">&gt; User-Agent: curl/7.54.0</span><br><span class="line">&gt; Accept: */*</span><br><span class="line">&gt;</span><br><span class="line">&lt; HTTP/1.1 200 OK</span><br><span class="line">&lt; Date: Mon, 29 Oct 2018 00:56:59 GMT</span><br><span class="line">&lt; Server: Apache</span><br><span class="line">&lt; Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT</span><br><span class="line">&lt; ETag: &quot;51-47cf7e6ee8400&quot;</span><br><span class="line">&lt; Accept-Ranges: bytes</span><br><span class="line">&lt; Content-Length: 81</span><br><span class="line">&lt; Cache-Control: max-age=86400</span><br><span class="line">&lt; Expires: Tue, 30 Oct 2018 00:56:59 GMT</span><br><span class="line">&lt; Connection: Keep-Alive</span><br><span class="line">&lt; Content-Type: text/html</span><br><span class="line">&lt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;meta http-equiv=&quot;refresh&quot; content=&quot;0;url=http://www.baidu.com/&quot;&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">* Connection #0 to host baidu.com left intact</span><br></pre></td></tr></table></figure></p>
+<h3 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h3>
       
 
       
@@ -273,37 +268,11 @@
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DB</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">事务</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/20/DB/事务/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/11/06/HTTP协议/HTTP/">展开全文 >></a>
         </p>
       
 
@@ -333,30 +302,24 @@
 
 
   
-    <article id="post-并发/Java多线程同步控制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-数据结构与算法/基础" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/14/并发/Java多线程同步控制/">java多线程同步控制</a>
-    </h1>
-  
-
-        
-        <a href="/2017/03/14/并发/Java多线程同步控制/" class="archive-article-date">
-  	<time datetime="2017-03-14T10:45:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-14</time>
-</a>
-        
-      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="synchronized的功能扩展：重入锁"><a href="#synchronized的功能扩展：重入锁" class="headerlink" title="synchronized的功能扩展：重入锁"></a>synchronized的功能扩展：重入锁</h3><p>重入锁完全可以替代<em>synchronized</em>关键字，远优于<em>synchronized</em>，但<em>JDK</em>之后<em>synchronized</em>做了大量优化。差距不大</p>
-        
-          <a class="article-more-a" href="/2017/03/14/并发/Java多线程同步控制/#more">more >></a>
-        
+        <h1 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h1><h3 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h3><p>均摊时间复杂度与复杂度震荡如何决绝</p>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>线型、树形、网状结构</p>
+<h1 id="栈-Stack"><a href="#栈-Stack" class="headerlink" title="栈 Stack"></a>栈 Stack</h1><p>后进先出（LIFO）的数据结构，在计算机世界中拥有不可思议的作用。</p>
+<ul>
+<li>编辑器中无处不在的Undo操作（撤销到上一步）</li>
+<li>程序调用使用的系统栈（子函数的调用）<br><img src="http://p7b5cwgjy.bkt.clouddn.com/15389938607299.jpg" alt=""><br>只涉及五个操作：</li>
+<li>void push（E）</li>
+<li>E pop()</li>
+<li>E peek()</li>
+<li>int getSize()</li>
+<li>boolean isEmpty()</li>
+</ul>
+
       
 
       
@@ -364,33 +327,11 @@
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java并发</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/14/并发/Java多线程同步控制/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/11/06/数据结构与算法/基础/">展开全文 >></a>
         </p>
       
 
@@ -420,30 +361,51 @@
 
 
   
-    <article id="post-java基础/java类型信息" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-JVM/JVM-类文件结构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/05/java基础/java类型信息/">java类型信息</a>
+      <a class="article-title" href="/2018/10/15/JVM/JVM-类文件结构/">JVM-类文件结构</a>
     </h1>
   
 
         
-        <a href="/2017/03/05/java基础/java类型信息/" class="archive-article-date">
-  	<time datetime="2017-03-05T10:45:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-05</time>
+        <a href="/2018/10/15/JVM/JVM-类文件结构/" class="archive-article-date">
+  	<time datetime="2018-10-15T13:59:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-15</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="运行时类型信息使得你在程序运行时发现和使用类型信息"><a href="#运行时类型信息使得你在程序运行时发现和使用类型信息" class="headerlink" title="运行时类型信息使得你在程序运行时发现和使用类型信息"></a>运行时类型信息使得你在程序运行时发现和使用类型信息</h2><p>我们如何使用类型信息呢？主要有两种方式：一是传统的<strong>RTTI</strong>，它假设在编译时我们直到所有的类型；二是<strong>反射机制</strong>，它允许我们在运行时发现和使用类的信息。</p>
-        
-          <a class="article-more-a" href="/2017/03/05/java基础/java类型信息/#more">more >></a>
-        
+        <ul>
+<li>Class文件是一组以8位字节为基础单位的二进制流，各个数据项严格的按照顺序排列在Class文件中，中间没有任何的分隔符，整个Class文件中存储的内容几乎全部是程序运行的必要数据，必有空隙存在。</li>
+<li>当遇到8位以上的空间数据项时，则会按照高位在前的方式分割成若干8位字节进行存储。</li>
+<li>Class文件中有两种数据类型，分别是无符号数和表。</li>
+</ul>
+<p>包括：</p>
+<ul>
+<li>魔数</li>
+<li>Class文件版本</li>
+<li>常量池</li>
+<li>访问标志</li>
+<li>类索引、父类索引，接口索引集合</li>
+<li>字段表集合</li>
+<li>方法表集合</li>
+<li>属性表集合</li>
+</ul>
+<h2 id="Class文件设计理念以及意义"><a href="#Class文件设计理念以及意义" class="headerlink" title="Class文件设计理念以及意义"></a>Class文件设计理念以及意义</h2><p>运行在JVM之上的语言： Clojure、Groovy、Jruby、Jpython、Scala…</p>
+<p>魔性配图<br><img src="http://p7b5cwgjy.bkt.clouddn.com/15405253424245.jpg" alt="-w781"></p>
+<p><img src="http://p7b5cwgjy.bkt.clouddn.com/15405334048549.jpg" alt="-w281"></p>
+<p>其中依次代表：</p>
+<p><img src="http://p7b5cwgjy.bkt.clouddn.com/15405214476706.jpg" alt=""></p>
+<p>看起来很费力，可以借助工具来阅读<code>javap -verbose HelloWorld.class</code></p>
+<h3 id="魔数"><a href="#魔数" class="headerlink" title="魔数"></a>魔数</h3><p>java的魔数是CAFEBABE</p>
+<h3 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h3><p>可以使用工具辅助我们读取</p>
+
       
 
       
@@ -456,7 +418,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java基础</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
@@ -477,7 +439,928 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/05/java基础/java类型信息/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/10/15/JVM/JVM-类文件结构/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-JVM/JVM-性能调优案例" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/15/JVM/JVM-性能调优案例/">JVM-性能调优</a>
+    </h1>
+  
+
+        
+        <a href="/2018/10/15/JVM/JVM-性能调优案例/" class="archive-article-date">
+  	<time datetime="2018-10-14T16:28:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>案例一：教师考核系统，论文，研究。。。<br>2核，64G</p>
+<p>经常程序出现卡顿，处理思路：<br><del>- 优化sql</del></p>
+<ul>
+<li>监控CPU</li>
+<li>监控内存<ul>
+<li>Full GC时长</li>
+</ul>
+</li>
+</ul>
+<p>如果经常生成大对象，FullGC频繁发生，可以考虑减小堆内存然后多台部署</p>
+<p>案例二：<br>简单爬虫应用<br>环境：2G，jdk7<br>问题：不定期出现内存溢出，把堆内存加大，也无济于事。导出堆栈存储快照信息，没有任何信息。内存监控，正常。<br>过程：换到8G机器，问题解决。<br>处理思路：既然一切正常，猜测是不是堆外内存导致。果然，爬虫使用了大量的NIO，我们知道NIO会使用对外内存，所以加大物理内存即可。</p>
+<p>案例三：</p>
+<ul>
+<li>物联网应用</li>
+<li>CentOS 6，JDK7，16G，8核</li>
+</ul>
+<p>问题: JVM经常崩溃，Connect Reset</p>
+<p>原因：海量client生产数据快，server消费数据慢，处理能力不对等<br>增加缓冲队列，如kafka</p>
+<p>大神的博客：<br><a href="https://juejin.im/entry/5bd45f545188252928653898?utm_source=gold_browser_extension" target="_blank" rel="noopener">https://juejin.im/entry/5bd45f545188252928653898?utm_source=gold_browser_extension</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/10/15/JVM/JVM-性能调优案例/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-JVM/JVM初步" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/11/JVM/JVM初步/">JVM初步</a>
+    </h1>
+  
+
+        
+        <a href="/2018/10/11/JVM/JVM初步/" class="archive-article-date">
+  	<time datetime="2018-10-11T06:38:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="jvm初体验-堆内存溢出"><a href="#jvm初体验-堆内存溢出" class="headerlink" title="jvm初体验 - 堆内存溢出"></a>jvm初体验 - 堆内存溢出</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * -Xms32M -Xmx32M -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> leon</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HeapOOM</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//模拟堆内存溢出</span></span><br><span class="line">        List&lt;Student&gt; demoList = <span class="keyword">new</span> ArrayList&lt;Student&gt;();</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>)&#123;</span><br><span class="line">            demoList.add(<span class="keyword">new</span> Student());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        
+          <a class="article-more-a" href="/2018/10/11/JVM/JVM初步/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/10/11/JVM/JVM初步/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-分布式事务/分布式事务之二-消息一致性" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/30/分布式事务/分布式事务之二-消息一致性/">常见分布式事务解决方案</a>
+    </h1>
+  
+
+        
+        <a href="/2018/09/30/分布式事务/分布式事务之二-消息一致性/" class="archive-article-date">
+  	<time datetime="2018-09-30T15:14:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="消息中间件的使用场景"><a href="#消息中间件的使用场景" class="headerlink" title="消息中间件的使用场景"></a>消息中间件的使用场景</h3><p>消息中间件在分布式系统中的主要作用是: <strong>异步通讯、解耦、并发缓冲</strong></p>
+<h3 id="消息发送和投递的不可靠性"><a href="#消息发送和投递的不可靠性" class="headerlink" title="消息发送和投递的不可靠性"></a>消息发送和投递的不可靠性</h3><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15382779878593.jpg" alt="-w754"><br>在分布式部署环境下，需要通过网络进行通讯，就引入了数据传输的不确定性，也就是CAP理论中的P（分区容错性的问题）</p>
+<h3 id="消息发送一致性"><a href="#消息发送一致性" class="headerlink" title="消息发送一致性"></a>消息发送一致性</h3><p>消息发送一致性： 是指产生消息的业务动作与消息发送的一致（也就是说，如果业务操作成功，那么由这个业务操作锁产生的消息一定要成功投递出去，否则就丢消息）</p>
+<h2 id="消息发送一致性如何保障？"><a href="#消息发送一致性如何保障？" class="headerlink" title="消息发送一致性如何保障？"></a>消息发送一致性如何保障？</h2><p>方式1：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">completeOrder</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//业务处理</span></span><br><span class="line">    orderBiz.process();</span><br><span class="line">    <span class="comment">//发送消息</span></span><br><span class="line">    sendAccountMsg();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>问题： 1. 业务操作成功，消息发送前应用突然故障，消息没发出去，导致消息丢失（订单系统与会计系统数据不一致）<br>2.业务操作成功，应用正常，但消息系统故障或者网络故障，导致消息发不出去（订单系统与会计系统数据不一致）</p>
+<p>方式2：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">completeOrder</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//发送消息</span></span><br><span class="line">    sendAccountMsg();</span><br><span class="line">    <span class="comment">//业务处理</span></span><br><span class="line">    orderBiz.process();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>问题：这种情况更不可控，消息发送出去了，但业务可能会失败。</p>
+<h3 id="JMS标准中XA协议方式是否可以保证发送一致性？"><a href="#JMS标准中XA协议方式是否可以保证发送一致性？" class="headerlink" title="JMS标准中XA协议方式是否可以保证发送一致性？"></a>JMS标准中XA协议方式是否可以保证发送一致性？</h3><p>JMS标准API中有很多XA开头的接口，就是前面提到的支持XA协议（基于两阶段提交协议）的全局事务型接口。可以提供分布式事务支持。<br>但是引入XA放的分布式事务，又带来了很多局限：</p>
+<ul>
+<li>要求业务操作资源必须支持XA协议（并不是所有的资源都支持XA）</li>
+<li>两阶段提交协议的成本</li>
+<li>持久化成本等DTP模型的局限性（全局锁定，成本高，性能低）<br>==引入XA，违背了柔性事务的初衷!==</li>
+</ul>
+<h2 id="消息发送一致性：变通的做法"><a href="#消息发送一致性：变通的做法" class="headerlink" title="消息发送一致性：变通的做法"></a>消息发送一致性：变通的做法</h2><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15382853471013.jpg" alt="-w759"></p>
+<p>消息发送一致性方案的正向流程是可行的，但异常流程是怎么处理呢？<br>消息发送到消息中间件中能得到保障了，但是的准确消费（投递）又如何保障呢？<br>有没有支持这种发送一致性流程的线程消息中间件？</p>
+<p><img src="http://p7b5cwgjy.bkt.clouddn.com/15382890478843.jpg" alt="-w754"><br><strong>任何一个环节都有可能出问题!</strong><br><strong>1.从主动方应用的角度分析：</strong></p>
+<table>
+<thead>
+<tr>
+<th>异常情况</th>
+<th>可能状态</th>
+<th>一致性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>预发消息失败</td>
+<td>消息未进存储，业务员操作未执行（可能原因：主动方应用、网络、消息中间件、消息存储）</td>
+<td>一致</td>
+</tr>
+<tr>
+<td>预发消息发送，而主动方没有收到返回消息存储结果</td>
+<td>1.消息未进行存储，业务操作未执行</td>
+<td>一致</td>
+</tr>
+<tr>
+<td></td>
+<td>2.消息已存储（待确认），业务操作未执行</td>
+<td>不一致</td>
+</tr>
+<tr>
+<td>收到消息存储成功的返回结果，但未执行业务操作就失败</td>
+<td>消息已进存储（待确认）,业务操作未执行</td>
+<td>不一致</td>
+</tr>
+</tbody>
+</table>
+<p><strong>2.从消息中间件的角度来分析</strong></p>
+<table>
+<thead>
+<tr>
+<th>异常情况</th>
+<th>可能状态</th>
+<th>一致性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>消息中间件没有收到主动方应用的业务操作处理结果</td>
+<td>1.消息已进存储（待确认），业务操作未执行（或业务操作出错回滚了）</td>
+<td>不一致</td>
+</tr>
+<tr>
+<td></td>
+<td>2.消息已进存储（待确认），业务操作成功</td>
+<td>不一致</td>
+</tr>
+<tr>
+<td>消息中间件收到业务操作结果(成功/失败)，但处理消息存储中的消息状态失败</td>
+<td>1.消息已进存储（待确认），业务操作未执行（或者业务操作出错回滚）</td>
+<td>不一致</td>
+</tr>
+<tr>
+<td></td>
+<td>2.消息已进存储（待确认），业务操作成功</td>
+<td>不一致</td>
+</tr>
+</tbody>
+</table>
+<p><strong>异常情况总结及处理：</strong></p>
+<table>
+<thead>
+<tr>
+<th>异常情况</th>
+<th>一致性</th>
+<th>异常处理方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>消息未存储，业务操作未执行</td>
+<td>一致</td>
+<td></td>
+</tr>
+<tr>
+<td>消息已存储（待确认），业务操作未执行</td>
+<td>不一致</td>
+<td>确认消息操作结果，处理消息（删除）</td>
+</tr>
+<tr>
+<td>消息已存储（待确认），业务操作成功</td>
+<td>不一致</td>
+<td>确认消息操作结果，处理消息（更新消息状态，执行消息投递）</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://p7b5cwgjy.bkt.clouddn.com/15382933644912.jpg" alt="-w755"><br>异常处理流程也有可能发生异常，只需重复执行上述流程即可。</p>
+<h1 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h1><h2 id="MQ队列模型的特点"><a href="#MQ队列模型的特点" class="headerlink" title="MQ队列模型的特点"></a>MQ队列模型的特点</h2><ul>
+<li>消息生产者发送消息至Queue中，消费者监听Queue并接受消息</li>
+<li>消息被消费后，就回从Queue中删除，所以消费者不会消费到已经被消费的消息</li>
+<li>Queue支持存在多个消费者，但是对于某一个消费者而言，只会有一个消费者成功消费</li>
+</ul>
+<p><img src="http://p7b5cwgjy.bkt.clouddn.com/15407936627321.jpg" alt="-w650"><br>MQ队列生产消费常规流程<br>1.Producer生产消息并发送给MQ（同步、异步）<br>2.MQ接收消息并将消息数据持久化到消息存储(持久化可选)<br>3.MQ向Producer返回消息的接受结果(返回值、异常)<br>4.Consumer监听并消费MQ中的消息<br>5.Consumer获取到消息后执行业务处理<br>6.Consumer对已成功消费的消息向MQ进行ACK确认（确认后从MQ中删除）</p>
+<h3 id="与消息发送一致性对比"><a href="#与消息发送一致性对比" class="headerlink" title="与消息发送一致性对比"></a>与消息发送一致性对比</h3><p>1.常规MQ队列消息的处理流程无法实现消息发送的一致性<br>2.投递消息的流程其实是消息的消费过程，可细化</p>
+<p><img src="http://p7b5cwgjy.bkt.clouddn.com/15407945163524.jpg" alt="-w758"><br>可靠消息的生产与消费的正向流程<br>6.被动方应用监听接收“待发送”状态的消息，执行业务处理；<br>7.业务处理完毕，想消息中间件发送ACK，确认消息已经收到（消息中间件从队列中删除该消息）</p>
+<h2 id="消息重发的原因"><a href="#消息重发的原因" class="headerlink" title="消息重发的原因"></a>消息重发的原因</h2><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15412127286627.jpg" alt="-w531"></p>
+<ol>
+<li>被动应用接收消息，业务处理完成后应用出现问题，消息中间件不知道消息处理结果，会重新投递消息。</li>
+<li>被动方接收到消息，业务处理完成后网络故障，消息中间件不能接收到消息处理结果，会重新投递消息。</li>
+<li>被动方接收到消息，业务处理耗时过长，消息中间因消息超时未确认，会重新投递消息。</li>
+<li>被动方接收到消息，业务处理完成，消息中间件问题导致收不到消息处理结果，消息会重新投递</li>
+<li>被动方接收到消息，业务处理完成，消息中间件收到消息，但由于消息存储故障导致消息没能成功确认，消息会再次投递</li>
+</ol>
+<p>总结，消息消费过程中产生消息重复发送的主要原因是消息没能及时的ACK确认。<br>==约束：被动方应用对于消息的业务处理必须实现幂等。==</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式事务</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/30/分布式事务/分布式事务之二-消息一致性/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-分布式事务/分布式事务解决方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/26/分布式事务/分布式事务解决方案/">常见分布式事务解决方案</a>
+    </h1>
+  
+
+        
+        <a href="/2018/09/26/分布式事务/分布式事务解决方案/" class="archive-article-date">
+  	<time datetime="2018-09-26T10:45:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="常见分布式事务解决方案"><a href="#常见分布式事务解决方案" class="headerlink" title="常见分布式事务解决方案"></a>常见分布式事务解决方案</h1><h2 id="首先什么是事务？"><a href="#首先什么是事务？" class="headerlink" title="首先什么是事务？"></a>首先什么是事务？</h2><ul>
+<li>一组操作构成的<strong>可靠、独立</strong>的工作单元<br>ACID</li>
+<li>Automicity 原子性</li>
+<li>Consistency 一致性</li>
+<li>Isolation 隔离性</li>
+<li>Durability 持久性</li>
+</ul>
+<p>难点：</p>
+<ul>
+<li>高度并发</li>
+<li>资源分布</li>
+<li>大时间跨度</li>
+</ul>
+<h3 id="本地事务"><a href="#本地事务" class="headerlink" title="本地事务"></a>本地事务</h3><p>本地事务是由资源管理器（如DBMS）本地管理。</p>
+<ul>
+<li>优点：支持严格ACID、可靠、高效、转态可以维护在资源管理器中、应用编程模型简单（在框架或平台的支持）</li>
+<li><p>局限：不具备分布式事务处理能力、隔离的最小单位由数据资源管理器决定，如数据库中的一条记录。<br><img src="http://p7b5cwgjy.bkt.clouddn.com/15379459216012.jpg" alt=""></p>
+<h3 id="全局事务（DTP模型）-–-标准的分布式事务"><a href="#全局事务（DTP模型）-–-标准的分布式事务" class="headerlink" title="全局事务（DTP模型） – 标准的分布式事务"></a>全局事务（DTP模型） – 标准的分布式事务</h3><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15379462228281.jpg" alt=""><br>全局事务：事务由全局事务管理器全局管理<br>事务管理器：管理全局事务状态与参与的资源， 协同资源的一致提交、回滚<br>TX协议：应用或应用服务器与事务管理器的接口<br>XA协议：全局事务管理器与资源管理器的接口</p>
+</li>
+<li><p>AP: 应用，可以理解为使用DTP的程序</p>
+</li>
+<li>RM：可以使DBMS，或者消息服务管理系统，应用通过资源管理器管理资源，资源必须实现XA定义的接口</li>
+<li>TM：事务管理器，负责协调和管理实务，提供给AP应用程序编程接口以及资源管理器。<br>事务管理器控制着全局事务，管理事务生命周期并协调资源，而资源管理器扶着控制和管理实际资源。<h4 id="XA"><a href="#XA" class="headerlink" title="XA"></a>XA</h4></li>
+<li>XA是有X/Open组织提出的分布式事务的规范。XA规范主要定义了（全局）事务管理器和（TM）和（局部）资源管理器（RM）之间的接口。主流的关系型数据库产品都是实现了XA接口的</li>
+<li>XA接口是双向的系统接口，在TM和一个或多个RM之间形成通信桥梁</li>
+<li>XA之所以需要引入事务管理器是因为，在分布式系统中，两台机器理论上无法达到一致状态，需要引入一个单点进行协调</li>
+<li>由全局事务管理器管理和协调的事务，可以跨越多个资源（如数据库和JMS队列）和进程。全局事务管理器一般使用XA二阶段提交协议与数据库进行交互。<h3 id="两阶段提交（2PC）"><a href="#两阶段提交（2PC）" class="headerlink" title="两阶段提交（2PC）"></a>两阶段提交（2PC）</h3>两阶段提交协议（Two-Phase commit protocol）是XA用于在全局事务中协调多个资源的机制。<br>TM和RM间才去两阶段提交的方案解决一致性问题。<br>两阶段提交需要一个协调者（TM）来掌控所有参与者阶段（RM）的操作结果并且指引这些节点是否最终提交。<br><img src="http://p7b5cwgjy.bkt.clouddn.com/15380285339585.jpg" alt=""><br><strong>准备操作与ACID</strong></li>
+<li>A: 准备后，仍然可以提交与回滚</li>
+<li>C: 准备时，一致性检查必须ok</li>
+<li>I: 准备后，事务结果仍然只能在事务内可见</li>
+<li>D: 准备后，事务结果已经持久</li>
+</ul>
+<p><strong>局限</strong></p>
+<ul>
+<li>协议成本（准备操作是一定必须吗）</li>
+<li>准备阶段的持久成本</li>
+<li>全局事务状态的持久成本</li>
+<li>潜在故障点多带来的脆弱性</li>
+<li>准备后，提交前的故障引发一系列隔离与恢复难题</li>
+</ul>
+<h4 id="JavaEE平台中的分布式事务实现"><a href="#JavaEE平台中的分布式事务实现" class="headerlink" title="JavaEE平台中的分布式事务实现"></a>JavaEE平台中的分布式事务实现</h4><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15380298408159.jpg" alt=""><br>JTA(Java Transaction API):面向应用、应用服务器与资 源管理器的高层事务接口<br>JTS(Java Transaction Service):JTA事务管理器的实现标 准，向上支持JTA，向下通过CORBA OTS实现跨事务域的互 操作性。<br>EJB:基于组件的应用编程模型，通过声明式事务管理进一步 简化事务应用的编程。</p>
+<ul>
+<li>优点：简单一直的编程模型、跨域分布处理的ACID保证</li>
+<li>局限：DTP模型本身的局限</li>
+</ul>
+<h3 id="标准分布式事务解决方案的利弊"><a href="#标准分布式事务解决方案的利弊" class="headerlink" title="标准分布式事务解决方案的利弊"></a>标准分布式事务解决方案的利弊</h3><p>优点：严格的ACID<br>缺点：效率非常低（微服务架构下已经不太适用了）</p>
+<ul>
+<li>全局事务方式下，全局事务管理器（TM）通过XA接口使用两阶段协议（2PC）与资源层（比如数据库）进行交互。使用全局事务，数据被Lock的时间比跨整个事务，知道全局事务结束。</li>
+<li>2PC是反伸缩模式，在事务处理过程中，参与者需要一直持有资源直到整个分布式事务结束。这样，当业务规模越来越大，2PC的局限性就越来越明显，系统可伸缩性会变得越来差</li>
+<li>与本地事务相比，XA协议的系统开销相当大，因而应当谨慎考虑是否确实需要分布式事务。而且只有实现了XA协议的资源才能参与分布式事务。</li>
+</ul>
+<h3 id="Base理论"><a href="#Base理论" class="headerlink" title="Base理论"></a>Base理论</h3><ul>
+<li>BA: Basic Availability 基本可用（支持分区失败）</li>
+<li>S: Soft State 柔性状态（状态允许短时间不同步，异步）</li>
+<li>E: Eventual consistency 最终一致性（最终数据一致，但不是实时一致）<br>原子性（A），持久性（D）必须根本保障<br>为了可用性、性能与降级服务的需要，只能降低一致性（C）与隔离性（I）的要求</li>
+</ul>
+<h3 id="CAP定理"><a href="#CAP定理" class="headerlink" title="CAP定理"></a>CAP定理</h3><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15380314768158.jpg" alt=""></p>
+<p>对于共享数据系统，最多只能同时拥有CAP中的两个，没法三者兼顾</p>
+<ul>
+<li>任两者的组合都有其适合的场景</li>
+<li>真实系统应当是ACID与BASE的混合体</li>
+<li>不同系统的业务可以也应当区别对待<br>结论：分布式系统中，最重要的是满足业务需求，而不是追求抽象、绝对的系统特征。</li>
+</ul>
+<h3 id="柔性事务"><a href="#柔性事务" class="headerlink" title="柔性事务"></a>柔性事务</h3><p>柔性事务（遵循BASE理论），是相对于ACID刚性事务而言的。<br>柔性事务氛围：<strong>两阶段型、补偿型、异步确保型、最大努力通知型</strong></p>
+<p>柔性事务中的服务模式：</p>
+<ul>
+<li>可查询操作</li>
+<li>幂等操作</li>
+<li>TCC操作</li>
+<li>可补偿操作</li>
+</ul>
+<h4 id="可查询操作"><a href="#可查询操作" class="headerlink" title="可查询操作"></a>可查询操作</h4><p>服务操作的可标识性</p>
+<ul>
+<li>服务操作具有全局唯一标识</li>
+<li>操作有唯一的、确定的时间（约定以谁的时间为准）</li>
+</ul>
+<p>单笔查询</p>
+<ul>
+<li>使用全局唯一的服务操作标识，查询操作的执行结果</li>
+<li>注意状态判断，小心“处理中”的状态</li>
+</ul>
+<p>批量查询</p>
+<ul>
+<li>使用时间段（或）一组服务操作的标识，查询一批操作执行结果</li>
+</ul>
+<h4 id="幂等操作"><a href="#幂等操作" class="headerlink" title="幂等操作"></a>幂等操作</h4><p>幂等性（Idempotenty）: 重复调用多次产生的业务结果与调用一次产生的业务结果相同</p>
+<ul>
+<li>f(f(x)) = f(x)</li>
+<li>实现方式：</li>
+<li>通过业务操作本身实现幂等。</li>
+<li>系统缓存所有请求与处理结果，检测到重复请求，自动返回之前的处理结果。</li>
+</ul>
+<h4 id="TCC操作"><a href="#TCC操作" class="headerlink" title="TCC操作"></a>TCC操作</h4><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15380388296049.jpg" alt=""></p>
+<p>Try： 尝试执行业务</p>
+<ul>
+<li>完成所有业务检查（一致性）</li>
+<li>预留必须业务资源（隔离性）</li>
+</ul>
+<p>Confirm: 确认执行业务</p>
+<ul>
+<li>真正执行的任务</li>
+<li>不做任何业务检查</li>
+<li>只是用Try阶段预留的业务员资源</li>
+<li>Confirm操作满足幂等</li>
+</ul>
+<p>Cancle：取消执行业务</p>
+<ul>
+<li>释放Try阶段预留的业务资源</li>
+<li>Cancle操作要满足幂等</li>
+</ul>
+<p><strong>TCC与2PC协议相比</strong></p>
+<ul>
+<li>位于业务层而非资源层</li>
+<li>没有单独的准备（Prepare)阶段,Try操作兼备资源操作和准备能力</li>
+<li>Try操作可以灵活选择业务资源的锁定粒度（以业务定粒度）</li>
+<li>较高的开发成本</li>
+</ul>
+<p>==误区：很多人把两阶段型操作等同于两阶段提交协议（2PC）操作，其实TCC操作也属于两阶段操作。==</p>
+<h4 id="可补偿操作"><a href="#可补偿操作" class="headerlink" title="可补偿操作"></a>可补偿操作</h4><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15380397550903.jpg" alt=""></p>
+<p><strong>do: 真正业务执行</strong></p>
+<ul>
+<li>完成业务处理</li>
+<li>业务执行结果外部可见</li>
+</ul>
+<p><strong>compensate：业务补偿</strong></p>
+<ul>
+<li>抵销（或部分抵销）正向业务操作的业务结果</li>
+<li>补偿操作满足幂等性</li>
+</ul>
+<p><strong>约束</strong></p>
+<ul>
+<li>补偿在业务上可行</li>
+<li>由于业务执行结果未隔离、或补偿不完整带来的风险与成本可控</li>
+</ul>
+<p>TCC操作中的Confirm和Cancle操作，其实也可以看做是补偿型操作</p>
+<h2 id="柔性事务解决方案：可靠消息最终一致（异步确保型）"><a href="#柔性事务解决方案：可靠消息最终一致（异步确保型）" class="headerlink" title="柔性事务解决方案：可靠消息最终一致（异步确保型）"></a>柔性事务解决方案：可靠消息最终一致（异步确保型）</h2><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15380443361255.jpg" alt="-w607"><br><strong>实现</strong>：业务处理服务在业务事务提交前，向实时消息服务请求发送消息，实时消息服务只记录消息数据，而不真正发送。业务处理服务在业务事务提交后，向实时消息服务确认发送，只有在得到确认发送指令后，实时消息服务才真正发送。<br><strong>消息</strong>：业务处理服务在业务事务回滚之后向实时消息取消发送。消息状态确认系统定期找到未确认发送或者回滚发送的消息，向业务处理服务询问消息状态，业务处理服务根据消息ID或消息内容确定该消息是否有效。<br><strong>约束</strong>： 被动方的处理结果不影响主动方的处理结果，被动方的消息处理操作是幂等的。<br><strong>成本：</strong>：可靠消息系统建设成本；一次消息发送需要两次请求，业务处理服务实现消息状态回查接口<br><strong>优点、适用范围</strong>：消息数据独立存储、独立伸缩，降低业务系统与消息系统的耦合；对最终一致性时间敏感度较高，降低业务被动方实现成本。<br><strong>用到的服务模式</strong>：可查询操作、幂等操作<br><strong>方案特点</strong>：兼容所有实现了JMS标准的MQ中间件；确保业务数据可靠的前提下，实现业务数据的最终一致（理想状态节本是实时一致）<br><strong>行业应用案例</strong>：支付宝、eBay（BASE）、去哪儿…</p>
+<h2 id="柔性事务解决方案：TCC（两阶段型、补偿型）"><a href="#柔性事务解决方案：TCC（两阶段型、补偿型）" class="headerlink" title="柔性事务解决方案：TCC（两阶段型、补偿型）"></a>柔性事务解决方案：TCC（两阶段型、补偿型）</h2><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15381158682579.jpg" alt="-w570"></p>
+<p><strong>实现</strong></p>
+<ul>
+<li>一个完整的业务活动由一个业务与若干从业服务组成</li>
+<li>主业务服务负责发起并完成整个业务货活动</li>
+<li>从业务服务提供TCC型业务操作</li>
+<li>业务活动管理器控制业务活动的一致性，它登记业务活动中的操作，并在业务活动提交时确认所有的TCC型操作的confirm操作，在业务活动取消时调用所有TCC型操作的cancle操作</li>
+</ul>
+<p><strong>成本</strong></p>
+<ul>
+<li>实现TCC操作的成本</li>
+<li>业务活动结束是confirm或cancel操作的执行成本</li>
+<li>业务活动日志成本</li>
+</ul>
+<p><strong>使用范围</strong></p>
+<ul>
+<li>强隔离性、严格一致性要求的业务活动</li>
+<li>适用于执行时间较短的业务（如处理账户、收费等业务）</li>
+</ul>
+<p><strong>所用到服务类型</strong>：TCC操作、幂等操作、可补偿操作、可查询操作</p>
+<p><strong>方案特点</strong></p>
+<ul>
+<li>不与具体的服务框架耦合（在RPC架构中通用）</li>
+<li>位于业务服务层，而非资源层</li>
+<li>可以灵活选择业务资源的锁定粒度</li>
+<li>TCC里对每个服务资源操作的是本地事务，数据被lock的时间短，可扩展性好（可以说是为独立部署的SOA服务而设计）</li>
+</ul>
+<p><strong>行业应用案例</strong>：支付宝分布式事务服务 DTS</p>
+<h2 id="柔性事务解决方案：最大努力通知（定期校对）"><a href="#柔性事务解决方案：最大努力通知（定期校对）" class="headerlink" title="柔性事务解决方案：最大努力通知（定期校对）"></a>柔性事务解决方案：最大努力通知（定期校对）</h2><p><img src="http://p7b5cwgjy.bkt.clouddn.com/15381182434717.jpg" alt="-w567"></p>
+<p><strong>实现</strong></p>
+<ul>
+<li>业务活动的主动方，在完成业务处理之后，向业务活动的被动方发送消息，允许消息丢失</li>
+<li>业务活动的被动方根据定时策略，向业务活动主动方查询，恢复丢失的业务数据</li>
+</ul>
+<p><strong>约束</strong>： 被动方的处理结果不影响主动方的处理结果<br><strong>成本</strong>：业务查询与校对系统的建设成本<br><strong>适用范围</strong>：对业务最终一致的时间敏感度地；跨企业的业务活动<br><strong>用到的服务模式</strong>：可查询操作<br><strong>方案特点</strong></p>
+<ul>
+<li>业务活动的主动方在完成业务处理后，想业务活动被动方发送通知消息（运行消息丢失）</li>
+<li>主动方可以设置时间阶梯型通知规则，在通知失败后按规则重复通知，知道通知N次后不再通知</li>
+<li>主动方提供对消息接口给被动方按需校对查询，用于恢复丢失的业务消息</li>
+</ul>
+<p><strong>行业应用案例</strong>： 银行通知、商户通知等（各大交易业务平台间的商户通知：多次通知、查询校对、对账文件）</p>
+<p>#总结<br>常用分布式事务解决方案</p>
+<ul>
+<li>刚性事务<ul>
+<li>全局事务（标准的分布式事务）</li>
+</ul>
+</li>
+<li>柔性事务<ul>
+<li>可靠消息最终一致（异步确认型）</li>
+<li>TCC（两阶段、补偿性）</li>
+<li>最大努力通知型（非可靠消息、定期校对）</li>
+<li>纯补偿型 </li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式事务</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/26/分布式事务/分布式事务解决方案/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-RabbitMQ/MQ" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/24/RabbitMQ/MQ/">RabbitMQ</a>
+    </h1>
+  
+
+        
+        <a href="/2018/09/24/RabbitMQ/MQ/" class="archive-article-date">
+  	<time datetime="2018-09-24T07:59:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><p>消息中间件：是消息传输过程中保存消息的容器，充当中间人的作用</p>
+<p>队里的主要目的提供路由保证消息的传递</p>
+<p>如果发送消息时，接受者不可用，队列会保留消息，直至成功传递，当然保存消息也是尤期限的。</p>
+<ul>
+<li>采用异步处理方式<br>消息发送者可以发送一个消息无需等待响应。消息发送者将消息发送到一条虚拟的通道（队列或者主题）上，消息接受者则是监听或订阅该通道。一条消息可以转发给一个或多个接收者，这些接收者无需对消息发送者同步回应。</li>
+<li>应用之间调用是松耦合的<br>发送者和接受者不必了解对方、只需确认消息<br>发送者、接收者不必同时在线。比如在线交易系统为了保证数据<strong>最终一致性</strong>，在支付系统处理完毕后把支付结果放到消息中间件里通知订单系统修改订单状态。两个系统通过消息解耦</li>
+</ul>
+<h2 id="消息传递服务模型"><a href="#消息传递服务模型" class="headerlink" title="消息传递服务模型"></a>消息传递服务模型</h2><ul>
+<li>点对点模型（PTP）<br>消息生产者将消息发送到指定名字标识的特定消费者（队列），队列消息可以放在内存中，也可以持久化。<br>特点：1.每个消息只有一个消费者<br>2.发送者好接收者没有时间依赖<br>3.接收者确认消息接受和处理成功（ACK）</li>
+<li>发布-订阅模型（Pub/Sub）<br>发布者和订阅者彼此不知道对方，多个消费者可以获得消息，在发布者和订阅者之间存在时间依赖性（时刻保持订阅关系）。发布者简历订阅（subscription）,以便消费者订阅。订阅者必须保持持续的活动状态已接受消息，除非订阅者建立了持久的订阅。在这种情况下，在订阅者为连接时发布的消息将在订阅者重新连接时重新发布。<br>特点： 1.每个消息可以有多个订阅者<br>2.客户端只有订阅后才能接收到消息<br>3.持久订阅和非之久订阅<br>持久订阅，订阅关系建立后，消息不呼呼消失，不管订阅者是都在线<br>非持续订阅，为了接受消息，订阅者必须一直在线</li>
+</ul>
+<h2 id="使用案例"><a href="#使用案例" class="headerlink" title="使用案例"></a>使用案例</h2><ul>
+<li>数据复制</li>
+<li>延迟消息发送和暂存<br>1.把中间件当做可靠的消息暂存地（指定时间内不删除的）<br>2.定时进行消息投递，比如模拟用户秒杀访问，进行西戎性能压测</li>
+<li>消息广播<br>1.缓存数据同步更新<br>2.往缓存应用推送数据，比如更新本地缓存 一般使用租约解决数据不一致问题</li>
+</ul>
+<h2 id="消息中间件分类"><a href="#消息中间件分类" class="headerlink" title="消息中间件分类"></a>消息中间件分类</h2><p>1.push 推消息模型：消息生产者将消息发送给消息传递服务，消息传递服务又将消息推给消息消费者。<br>2.pull 拉消息模型，消费者请求消息服务接收消息，消息生产者从消息中间件拉取该消息。</p>
+<h3 id="两种类型区别"><a href="#两种类型区别" class="headerlink" title="两种类型区别"></a>两种类型区别</h3><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>push</th>
+<th>pull</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>服务端</td>
+<td>消息存储<br>处理请求<br>保存推送轨迹<br>保存订阅关系<br>消费者负载均衡<br>集中式</td>
+<td>消息存储<br>处理请求<br>分布式</td>
+</tr>
+<tr>
+<td>客户端</td>
+<td>处理响应请求</td>
+<td>处理响应和请求<br>保存pull状态，如拉取位置偏移量offset<br>异常情况下的消息暂存和rerecover</td>
+</tr>
+<tr>
+<td>实时性</td>
+<td>较好。收到数据后立即发送客户端</td>
+<td>取决于pull的间隔时间</td>
+</tr>
+<tr>
+<td>消费者故障</td>
+<td>消费者故障情况下，服务端堆积消息，重复推送耗费资源<br>保存推送轨迹压力很大</td>
+<td>消费者故障，对服务端无影响</td>
+</tr>
+<tr>
+<td>其他</td>
+<td>更多控制，能够实现多样化的推送机制<br>当消费者数量增多时，推送压力较大，性能天花板<br>消费者处理能力差异，导致堆积消息</td>
+<td>需要在客户端实现消息过滤，浪费资源<br>需要在不同客户端之间协调，做负载均衡</td>
+</tr>
+</tbody>
+</table>
+<h2 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h2><p>RabbitMQ是一个在AMQP协议标准基础上完整的，可服务企业消息系统。AMQP（高级消息队列协议）是一个异步消息传递所使用的应用层协议规范，作为线路层协议，而不是API（例如JMS）</p>
+<h3 id="运行原理"><a href="#运行原理" class="headerlink" title="运行原理"></a>运行原理</h3><p>RabbitMQ两大核心组件Exchange和Queue，运行原理图<img src="/var/folders/bp/cscsbss94b11pxqq51g50d680000gn/T/abnerworks.Typora/image-20180924223023620.png" alt="image-20180924223023620"></p>
+<h3 id="重要术语"><a href="#重要术语" class="headerlink" title="重要术语"></a>重要术语</h3><p>1.<strong>server（broker）</strong>：接受客户端连接，失效AMQP消息队列和路由功能的进程</p>
+<p>2.<strong>Virtual Host</strong>: 其实这是一个虚拟概念，类似权限控制组，一个Virtual Host里面可以有若干个Exchange和Queue，但是权限控制的最小粒度是Virtual Host</p>
+<p>3.<strong>Exchange</strong>: 接受生产者发送的消息，并根据Binding规则将消息<strong>路由</strong>给服务器队列。ExchangeType决定了Exchange路由的行为。在RabbitMQ中，ExchangeType有<strong>direct、Fanout、Topic</strong> 三种，不同类型的Exchange路由行为不同。</p>
+<ul>
+<li><p><strong>Direct Exchange</strong>：直接交互式路由键。需要将一个队列绑定到交换机上，要求消息与一个特定的路由键完全匹配</p>
+</li>
+<li><p><strong>Fanout Exchange</strong>: 广播式路由键。只需简单的将队列绑定到交换机上。一个发送到交换机上的消息就回被转发到该交换机绑定的所有队列上。Fanout交换机转发消息是最快的。</p>
+</li>
+<li><p><strong>Topic Exchange</strong>: 主题式交换器。通过消息的路由关键字和绑定关键字的模式匹配，将消息路由到绑定的队列中。这种路由类型可以被用来支持经典的发布/订阅消息传输模型–使用主题名字空间作为消息寻址模式，将消息传递给哪些或全部主题模式的多个消费者。主题交换器类型的工作方式如下：绑定关键字用零个或多个标记组成，每个标记之间用“.”分隔，并支持通配符：“<em>”匹配一个词组，“#”零个或多个词组。因此绑定关键字` </em>.statck.#`匹配路由关键字“usd.statck”和“eur.stack.db”，但不匹配“stack.nasdaq”</p>
+</li>
+</ul>
+<p>4.<strong>Message Queue</strong>：消息队列，用于存储还未被消费者消费的消息。</p>
+<p>5.<strong>Message</strong>：有Header、Body组成，Header是由生产者添加的各种属性集合，包括消息Message是否被持久化，由那个Message Queue接收，优先级是多少等；而body才是真正需要的业务数据。</p>
+<p>6.<strong>Binding Key</strong>：所谓绑定指的是，将一个特定Exchange和一个特定Queue绑定起来，而他们绑定关系使用的就是Binding Key</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RabbitMQ</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/24/RabbitMQ/MQ/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-JVM/ClassLoader揭秘" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/17/JVM/ClassLoader揭秘/">ClassLoader揭秘</a>
+    </h1>
+  
+
+        
+        <a href="/2018/09/17/JVM/ClassLoader揭秘/" class="archive-article-date">
+  	<time datetime="2018-09-17T06:38:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-17</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是Classloader"><a href="#什么是Classloader" class="headerlink" title="什么是Classloader"></a>什么是Classloader</h2><p>一个Java程序要想运行起来，首先需要经过编译成.class文件，然后创建一个环境（JVM）来加载字节码文件到内存中运行，而.class文件是怎么加载到JVM中去的呢？这就是Java Classloader做的事情了。</p>
+<p>什么时候加载？</p>
+<ul>
+<li>new 操作</li>
+<li>Class.forName(“包路径+类名”)</li>
+<li>Class.forName(“包路径+类名”, classloader)</li>
+<li>classloader.loadclass(“包路径+类名”)</li>
+</ul>
+<p>以上操作会触发类加载器去加载对应的路径去查找*.class, 并创建Class对象。</p>
+        
+          <a class="article-more-a" href="/2018/09/17/JVM/ClassLoader揭秘/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/17/JVM/ClassLoader揭秘/">展开全文 >></a>
         </p>
       
 
@@ -509,7 +1392,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -521,7 +1404,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 leon
+    		&copy; 2019 leon
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -604,18 +1487,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java基础</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">DB</a>
               </li>
              
@@ -624,15 +1495,43 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">ZooKeeper</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java基础</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">分布式事务</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
               </li>
             
             <div class="clearfix"></div>

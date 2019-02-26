@@ -154,54 +154,88 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-JVM/JVM-垃圾回收" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-ZooKeeper/ZK基础" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/29/JVM/JVM-垃圾回收/">JVM-垃圾回收</a>
-    </h1>
-  
-
-        
-        <a href="/2018/10/29/JVM/JVM-垃圾回收/" class="archive-article-date">
-  	<time datetime="2018-10-29T10:45:10.233Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-29</time>
-</a>
-        
-      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <ul>
-<li>如何判定对象为垃圾对象<ul>
-<li>引用计数法</li>
-<li>可达性分析</li>
+        <h2 id="ZK-特征"><a href="#ZK-特征" class="headerlink" title="ZK 特征"></a>ZK 特征</h2><ul>
+<li>一致性： 数据一致性，数据按顺序分批入库</li>
+<li>原子性：事务要么成功要么失败，不会局部化</li>
+<li>单一视图：客户端连接集群的任一zk节点，数据都是一致的</li>
+<li>可靠性：每次对zk的操作状态都会保存在服务端</li>
+<li>实时性：客户端可以读取到zk服务器的最新数据</li>
 </ul>
+<h2 id="zoo-cfg"><a href="#zoo-cfg" class="headerlink" title="zoo.cfg"></a>zoo.cfg</h2><ul>
+<li>tickTime: 用于计算的时间单元，比如session超时：N*tickTime</li>
+<li>initTime：用于集群，允许从节点连接并同步到master节点的初始化连接时间，以tickTime的倍数表示</li>
+<li>syncLimit：用于集群，master主节点与从节点之间发送消息，请求与应答时间长度（心跳机制）</li>
+<li>dataDir：必须配置</li>
+<li><p>dataLogDir：如果不配置，就和dataDir公用同一个目录</p>
 </li>
-<li>如何回收<ul>
-<li>回收策略<ul>
-<li>标记-清楚算法</li>
-<li>复制算法</li>
-<li>标记-整理算法</li>
-<li>分代收集算法</li>
-</ul>
-</li>
-<li>垃圾回收器<ul>
-<li>Serial</li>
-<li>Parnew</li>
-<li>Cms</li>
-<li>G1</li>
-</ul>
+<li><p>clientPort：连接服务器端口，默认2181</p>
 </li>
 </ul>
+<h2 id="ZooKeeper基本数据模型"><a href="#ZooKeeper基本数据模型" class="headerlink" title="ZooKeeper基本数据模型"></a>ZooKeeper基本数据模型</h2><ul>
+<li>是一种树形结构</li>
+<li>也可以理解为Linux/Unix的目录结构 /user/local/..</li>
+<li><p>每一个节点称之为znode，他可以有子节点，也可以有数据（每一个目录有子目录，目录也可以有目录数据）</p>
 </li>
-<li>何时回收</li>
+<li><p>每个节点分为临时节点和永久节点，临时节点在客户端断开时后消失</p>
+</li>
+<li>每个zk节点都有各自的版本号，可以通过命令行来显示节点信息</li>
+<li>每当节点的数据放生变化，那么该节点的版本号累加（类比数据库的乐观锁）</li>
+<li>删除/修改过时节点，版本号不匹配会报错</li>
+<li>每个zk节点存储数据不宜过大，几K即可</li>
+<li>节点可以设置权限acl，可以通过权限来限制用户访问</li>
 </ul>
-        
-          <a class="article-more-a" href="/2018/10/29/JVM/JVM-垃圾回收/#more">more >></a>
-        
+<h2 id="ZK的作用体现"><a href="#ZK的作用体现" class="headerlink" title="ZK的作用体现"></a>ZK的作用体现</h2><ul>
+<li><p>master节点选举。主节点挂了以后，从节点就会接手工作，并且保证这个节点时唯一的，这就是所谓的首脑模式，从而保证我们的集群是高可用的</p>
+</li>
+<li><p>统一配置文件管理。即只需要部署一台服务器，则可以把相同的文件同步更新到其他服务器，此操作在云服务中用的特别多（假设修改了redis的统一配置）</p>
+</li>
+<li><p>发布与订阅。类似消息队列MQ，dubbo发布者将数据存在znode上，订阅者会读取这个数据</p>
+<p>  <img src="https://ws2.sinaimg.cn/large/006tKfTcgy1g0amuzzxduj30q0092tb1.jpg" alt="image-20190218155906214"></p>
+</li>
+<li><p>提供分布式锁。分布式环境中不同进程之间争夺资源，类似多线程中的锁。</p>
+<p>  <img src="https://ws4.sinaimg.cn/large/006tKfTcgy1g0amyq5fyqj30xo0bctd8.jpg" alt=""></p>
+</li>
+<li><p>集群管理，集群中保证数据的强一致性。客户端在主节点写入数据，从节点也会有该数据。</p>
+</li>
+</ul>
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p><code>./zkCli.sh</code> 进行连接</p>
+<ul>
+<li>get /</li>
+<li>ls /</li>
+<li>ls2 /</li>
+<li>stat /</li>
+</ul>
+<h2 id="ZK特征"><a href="#ZK特征" class="headerlink" title="ZK特征"></a>ZK特征</h2><h3 id="session的基本原理"><a href="#session的基本原理" class="headerlink" title="session的基本原理"></a>session的基本原理</h3><ul>
+<li>客户端与服务端之间的连接存在会话</li>
+<li>每个会话都可以设置一个超时时间</li>
+<li>心跳结束，session则过期</li>
+<li>session过去，临时节点znode会被抛弃</li>
+<li>心跳机制：客户端像服务端的ping包请求</li>
+</ul>
+<h3 id="zk常用操作命令-help查看"><a href="#zk常用操作命令-help查看" class="headerlink" title="zk常用操作命令(help查看)"></a>zk常用操作命令(help查看)</h3><ul>
+<li><strong>create命令</strong> create [-s] [-e] /leon/test test-data (-s顺序节点，-临时节点, 通过get /leon/test查看，如果ephemeralOwner = 0x0就是永久节点，否则是临时节点)</li>
+<li><strong>set命令</strong> set /leon/test new-data [version], 节点值发生改变，同时dataVersion发生改变（可传入version实现乐观锁）</li>
+<li><strong>delete命令</strong> delete path [version], 如果指定了版本，只能最删除新版本才能成功</li>
+</ul>
+<h3 id="watcher机制"><a href="#watcher机制" class="headerlink" title="watcher机制"></a>watcher机制</h3><ul>
+<li>针对每个节点的操作，都会有一个监督者–watcher</li>
+<li>当监控的某个节点(znode)发生变化，则触发watcher事件</li>
+<li>zk中watcher是一次性的，触发后就立即销毁，(可以使用中间件Curator实现永久监控)</li>
+<li>父节点、子节点 增删改都能触发其watcher</li>
+<li>针对不同类型的操作，触发的watcher事件不同，<ul>
+<li>(子)节点创建事件</li>
+<li>(子)节点删除事件</li>
+<li>(子)节点数据变化事件</li>
+</ul>
+</li>
+<li></li>
+</ul>
+
       
 
       
@@ -209,6 +243,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">ZooKeeper</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
@@ -224,7 +269,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/29/JVM/JVM-垃圾回收/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/02/18/ZooKeeper/ZK基础/">展开全文 >></a>
         </p>
       
 
@@ -254,665 +299,73 @@
 
 
   
-    <article id="post-JVM/JVM-内存分配" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-RabbitMQ/RabbitMQ高级特性" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/14/JVM/JVM-内存分配/">JVM-内存分配</a>
+      <a class="article-title" href="/2019/01/06/RabbitMQ/RabbitMQ高级特性/">RabbitMQ高级特性</a>
     </h1>
   
 
         
-        <a href="/2018/10/14/JVM/JVM-内存分配/" class="archive-article-date">
-  	<time datetime="2018-10-14T15:38:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-14</time>
+        <a href="/2019/01/06/RabbitMQ/RabbitMQ高级特性/" class="archive-article-date">
+  	<time datetime="2019-01-05T16:09:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-06</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>内存分配策略：</p>
+        <h1 id="Rabbit高级特性"><a href="#Rabbit高级特性" class="headerlink" title="Rabbit高级特性"></a>Rabbit高级特性</h1><h2 id="生产端-消息如何保障100-投递成功？"><a href="#生产端-消息如何保障100-投递成功？" class="headerlink" title="生产端-消息如何保障100%投递成功？"></a>生产端-消息如何保障100%投递成功？</h2><h3 id="什么是生产端可靠性投递？"><a href="#什么是生产端可靠性投递？" class="headerlink" title="什么是生产端可靠性投递？"></a>什么是生产端可靠性投递？</h3><ul>
+<li>保障消息成功发送</li>
+<li>保障MQ节点成功接收</li>
+<li>发送端收到MQ节点（Broker）确认应答</li>
+<li>完善的消息进行补偿机制</li>
+</ul>
+<p><strong>互联网大厂解决复方案：</strong></p>
+<blockquote>
+<p>方式一：消息落库，对消息状态进行打标（最大努力尝试）</p>
+</blockquote>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1fyw5pht4uxj30qj0d7djb.jpg" alt=""></p>
+<p>==在高并发的场景下，第一种方式是否合适？==</p>
+<blockquote>
+<p>方式二： 消息的延迟投递，做二次确认，回调检查</p>
+</blockquote>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1fywqd7j8h9j30q40d9acm.jpg" alt=""></p>
+<p>上述的step4不同于以往的消息ack， 而是发送一条新的消息，callbackService会监听这条消息</p>
+<p>延迟投递的消息step2与step发送到的不是同一队列，延迟投递的消息也需要callbackService来监听；如果check消息确认成功了，不做任何事情，如果失败了，会去执行resend，进行补偿。</p>
+<p>这样做可以<strong>少落一次库</strong>，提升并发性能；同时业务与消息<strong>解耦</strong>；</p>
+<p>注意两点：</p>
+<p>1.一定要先业务数据落库，再发消息。</p>
+<p>2.互联网大厂不加任何事务，事务会成为严重的性能瓶颈。</p>
+<h2 id="消费端-幂等性如何保障？"><a href="#消费端-幂等性如何保障？" class="headerlink" title="消费端-幂等性如何保障？"></a>消费端-幂等性如何保障？</h2><blockquote>
+<p>消费端实现幂等，就意味着我们的消息永远不会被消费多次，即使收到多条一样的消息。</p>
+</blockquote>
+<p><strong>业界主流的幂等操作：</strong></p>
 <ol>
-<li>对象优先分配到Eden</li>
-<li>大对象直接到老年代</li>
-<li>长期存活的对象直接分配到老年代</li>
-<li>空间分配担保</li>
-<li>动态对象年龄判断</li>
-</ol>
-        
-          <a class="article-more-a" href="/2018/10/14/JVM/JVM-内存分配/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/14/JVM/JVM-内存分配/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JVM/JVM-虚拟机工具" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/14/JVM/JVM-虚拟机工具/">JVM-虚拟机工具</a>
-    </h1>
-  
-
-        
-        <a href="/2018/10/14/JVM/JVM-虚拟机工具/" class="archive-article-date">
-  	<time datetime="2018-10-14T05:38:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>官方提供：</p>
+<li><p><strong>唯一ID+指纹码 机制</strong></p>
 <ul>
-<li><p><strong>jps</strong> 查看java进程状态</p>
-<ul>
-<li><code>-l</code> 显示运行的主类</li>
-<li><code>-m</code> 显示主类接收的参数</li>
-<li><code>-v</code> 显示接受的虚拟机参数</li>
+<li><p>唯一ID+指纹码 机制， 利用数据库主键去重</p>
+</li>
+<li><p>SELECT COUNT(1) FROM T_ORDER WHERE ID=唯一ID+指纹码</p>
+</li>
+<li>优点：实现简单</li>
+<li>缺点：高并发下有数据库写入性能瓶颈</li>
+<li>解决方案：根据ID进行分库分表进行算法路由</li>
 </ul>
 </li>
-<li><p><strong>jstat</strong> 监控虚拟统计信息</p>
-        
-          <a class="article-more-a" href="/2018/10/14/JVM/JVM-虚拟机工具/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/14/JVM/JVM-虚拟机工具/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JVM/JVM-内存管理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/12/JVM/JVM-内存管理/">JVM-内存管理</a>
-    </h1>
-  
-
-        
-        <a href="/2018/10/12/JVM/JVM-内存管理/" class="archive-article-date">
-  	<time datetime="2018-10-11T23:38:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://p7b5cwgjy.bkt.clouddn.com/15393237795977.jpg" alt="-w713"></p>
-        
-          <a class="article-more-a" href="/2018/10/12/JVM/JVM-内存管理/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/12/JVM/JVM-内存管理/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JVM/JVM初步" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/11/JVM/JVM初步/">JVM初步</a>
-    </h1>
-  
-
-        
-        <a href="/2018/10/11/JVM/JVM初步/" class="archive-article-date">
-  	<time datetime="2018-10-11T06:38:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="jvm初体验-堆内存溢出"><a href="#jvm初体验-堆内存溢出" class="headerlink" title="jvm初体验 - 堆内存溢出"></a>jvm初体验 - 堆内存溢出</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Demo&gt; demoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>)&#123;</span><br><span class="line">            demoList.add(<span class="keyword">new</span> Demo());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2018/10/11/JVM/JVM初步/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/11/JVM/JVM初步/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JVM/ClassLoader揭秘" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/17/JVM/ClassLoader揭秘/">ClassLoader揭秘</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/17/JVM/ClassLoader揭秘/" class="archive-article-date">
-  	<time datetime="2018-09-17T06:38:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="什么是Classloader"><a href="#什么是Classloader" class="headerlink" title="什么是Classloader"></a>什么是Classloader</h2><p>一个Java程序要想运行起来，首先需要经过编译成.class文件，然后创建一个环境（JVM）来加载字节码文件到内存中运行，而.class文件是怎么加载到JVM中去的呢？这就是Java Classloader做的事情了。</p>
-<p>什么时候加载？</p>
+<li><p><strong>利用Redis院子特性实现</strong></p>
 <ul>
-<li>new 操作</li>
-<li>Class.forName(“包路径+类名”)</li>
-<li>Class.forName(“包路径+类名”, classloader)</li>
-<li>classloader.loadclass(“包路径+类名”)</li>
+<li>使用Redis进行幂等需要考虑的问题</li>
+<li>第一： 我们是否进行数据落库， 如果落库的话，关键解决的问题是数据库和缓存如何做到原子性？</li>
+<li>第二： 如果不进行落库， 那么都存储到缓存中，如何设置定时同步策略？</li>
 </ul>
-<p>以上操作会触发类加载器去加载对应的路径去查找*.class, 并创建Class对象。</p>
-        
-          <a class="article-more-a" href="/2018/09/17/JVM/ClassLoader揭秘/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/17/JVM/ClassLoader揭秘/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-缓存/缓存三大问题及解决方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/15/缓存/缓存三大问题及解决方案/">缓存三大问题及解决方案</a>
-    </h1>
-  
-
-        
-        <a href="/2018/08/15/缓存/缓存三大问题及解决方案/" class="archive-article-date">
-  	<time datetime="2018-08-15T01:41:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="缓存来由"><a href="#缓存来由" class="headerlink" title="缓存来由"></a>缓存来由</h2><p>随着互联网应用的逐步完善，对于用户体验和系统稳定性的要求也越来越高，为提高系统的qps，目前绝大多数的系统都通过增加缓存这一手段避免过多请求直接直接参与数据库操作而带来系统瓶颈。</p>
-<h2 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h2>
-        
-          <a class="article-more-a" href="/2018/08/15/缓存/缓存三大问题及解决方案/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/08/15/缓存/缓存三大问题及解决方案/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-架构/架构设计之二-复杂度来源" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/15/架构/架构设计之二-复杂度来源/">架构设计之二--复杂度来源</a>
-    </h1>
-  
-
-        
-        <a href="/2018/06/15/架构/架构设计之二-复杂度来源/" class="archive-article-date">
-  	<time datetime="2018-06-15T03:41:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在背景阶段我们分析了架构设计的主要目的是解决软件系统中复杂度带来的问题，那么软件复杂度的来源是什么？</p>
-<h2 id="复杂度来源：高性能"><a href="#复杂度来源：高性能" class="headerlink" title="复杂度来源：高性能"></a>复杂度来源：高性能</h2>
-        
-          <a class="article-more-a" href="/2018/06/15/架构/架构设计之二-复杂度来源/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">架构设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/06/15/架构/架构设计之二-复杂度来源/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-RabbitMQ/RabbitMQ入门" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/14/RabbitMQ/RabbitMQ入门/">理解RabbitMQ消息通信</a>
-    </h1>
-  
-
-        
-        <a href="/2018/04/14/RabbitMQ/RabbitMQ入门/" class="archive-article-date">
-  	<time datetime="2018-04-14T07:59:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="消费者和生产者"><a href="#消费者和生产者" class="headerlink" title="消费者和生产者"></a>消费者和生产者</h2>
-        
-          <a class="article-more-a" href="/2018/04/14/RabbitMQ/RabbitMQ入门/#more">more >></a>
-        
+</li>
+</ol>
+<h2 id="confirm-确认消息"><a href="#confirm-确认消息" class="headerlink" title="confirm 确认消息"></a>confirm 确认消息</h2>
       
 
       
@@ -946,7 +399,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/14/RabbitMQ/RabbitMQ入门/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/01/06/RabbitMQ/RabbitMQ高级特性/">展开全文 >></a>
         </p>
       
 
@@ -976,63 +429,314 @@
 
 
   
-    <article id="post-java基础/Java8" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-RxJava/初步" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h2 id="RxJava初步"><a href="#RxJava初步" class="headerlink" title="RxJava初步"></a>RxJava初步</h2><p>什么是响应式编程：</p>
+<p>面向<strong>数据流</strong>和<strong>变化传播</strong>的<strong>变成范式</strong></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/01/04/RxJava/初步/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-SpringCloud/SpringCloud" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>分布式系统为什么需要注册中心/服务发现？</p>
+<ul>
+<li>服务端发现 - Eureka</li>
+<li>客户端发现 - Nginx、Zookeeper、Kubernetes</li>
+</ul>
+<p>服务注册实现：心跳检测，检测注册的服务是否健康</p>
+<p>高可用：通过Eureka之间相互注册实现高可用</p>
+<hr>
+
+<p>客户端负载均衡组件：Ribbon</p>
+<ul>
+<li>服务发现</li>
+<li>服务选择规则</li>
+<li>服务监听</li>
+</ul>
+<p>Ribbon主要组件：</p>
+<ul>
+<li>ServerList</li>
+<li>IRule</li>
+<li>ServerListFilter</li>
+</ul>
+<p>RestTemplate &amp; Feign % Zuul 三者都使用到了Ribbon</p>
+<p>Zuul</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzfhd42ngej30i40dk0wq.jpg" alt=""></p>
+<p>限流方案：</p>
+<p>令牌桶限流</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fzfk53osq2j30j80cydiw.jpg" alt=""></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/12/27/SpringCloud/SpringCloud/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-MongoDB/初步" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start  mongod.service</span><br><span class="line">systemctl stop  mongod.service</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/12/14/MongoDB/初步/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-SpringBoot/SpringBoot" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><code>nohup java -jar eureka-0.0.1-SNAPSHOT.jar &gt; /dev/null 2&gt;&amp;1 &amp;</code></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/12/12/SpringBoot/SpringBoot/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-JVM/JVM-内存分配" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Eden区域"><a href="#Eden区域" class="headerlink" title="Eden区域"></a>Eden区域</h2><h2 id="长期存活对象将进入老年代"><a href="#长期存活对象将进入老年代" class="headerlink" title="长期存活对象将进入老年代"></a>长期存活对象将进入老年代</h2><h2 id="空间分配担保"><a href="#空间分配担保" class="headerlink" title="空间分配担保"></a>空间分配担保</h2><h2 id="逃逸分析与栈上分配"><a href="#逃逸分析与栈上分配" class="headerlink" title="逃逸分析与栈上分配"></a>逃逸分析与栈上分配</h2><p>## </p>
+<pre><code>``
+</code></pre>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/12/07/JVM/JVM-内存分配/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Redis/Redis初始" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/05/java基础/Java8/">java类型信息</a>
+      <a class="article-title" href="/2018/11/25/Redis/Redis初始/">Redis一站式学习</a>
     </h1>
   
 
         
-        <a href="/2018/03/05/java基础/Java8/" class="archive-article-date">
-  	<time datetime="2018-03-05T13:45:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-05</time>
+        <a href="/2018/11/25/Redis/Redis初始/" class="archive-article-date">
+  	<time datetime="2018-11-25T02:45:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-25</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="1-为什么关心Java8"><a href="#1-为什么关心Java8" class="headerlink" title="1.为什么关心Java8"></a>1.为什么关心Java8</h1><ul>
-<li>计算背景变化： 多核时代&amp;处理大数据集</li>
-<li>改进：函数式比命令式更适合新的体系架构</li>
-<li>核心特征： Lambda、Stream、默认方法</li>
-</ul>
-<h2 id="Java的演变"><a href="#Java的演变" class="headerlink" title="Java的演变"></a>Java的演变</h2><h2 id="Java中的函数"><a href="#Java中的函数" class="headerlink" title="Java中的函数"></a>Java中的函数</h2><h3 id="方法和Lambda作为一等公民"><a href="#方法和Lambda作为一等公民" class="headerlink" title="方法和Lambda作为一等公民"></a>方法和Lambda作为一等公民</h3><ul>
-<li>Java8的第一个新功能<strong>方法引用</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">File[] hiddenFiles = <span class="keyword">new</span> File(*.*).listsFiles(<span class="keyword">new</span> FileFilter()&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">accept</span><span class="params">(File file)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> file.isHidden();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+        <h2 id="Redis特征"><a href="#Redis特征" class="headerlink" title="Redis特征"></a>Redis特征</h2><ul>
+<li><p>速度快 </p>
 </li>
-</ul>
-<p>Java8的写法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">File[] hiddenFiles = <span class="keyword">new</span> File(*.*).listFiles(File::isHidden);</span><br></pre></td></tr></table></figure></p>
-<p>你已经有的函数isHidden，只需要使用java8的方法引用语法::(即将这个方法作为值传给listFiles方法)。好处是，你的代码更接近问题的陈诉。与对象引用相似（new一个对象），这里传递的是一个方法引用（通过File::isHiddenc创建了一个方法引用），你同样可以传递它。</p>
-<ul>
-<li>Lambda匿名函数<br>除了允许命名函数成为一等公民外，Java8还体现了更广义的将函数作为值的思想，包括匿名函数。比如，你可以将（int x）-&gt; x + 1作为参数传给另一个函数，表示接受一个给定的x，返回x+1值的函数。这样做有什么必要呢？因为我们完全可以新建一个MathUtil类添加add1方法，然后传递MathUtil::add1嘛！确实可以这样，但要是你没有这样的类和方法可用呢，新的Lambda语法更简洁。</li>
-</ul>
-<h3 id="传递代码"><a href="#传递代码" class="headerlink" title="传递代码"></a>传递代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> List&lt;Apple&gt; <span class="title">filterApples</span><span class="params">(List&lt;Apple&gt; inventory, Predicate&lt;Apple&gt; p)</span></span>&#123;</span><br><span class="line">  List&lt;Apple&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span>(Apple apple: inventory)&#123;</span><br><span class="line">    <span class="keyword">if</span>(p.test(apple))&#123;</span><br><span class="line">      result.add(apple);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>方法希望接受一个Predicate<apple>参数，<strong>谓词</strong>在数学上常常用来代表一个类似函数的东西。<br>使用的话就是可以这样写了：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">filterApples(inventory, Apple::isHeavy);</span><br><span class="line">filterApples(inventory, Apple::isGreen)</span><br></pre></td></tr></table></figure></apple></p>
-<h3 id="传递Lambda"><a href="#传递Lambda" class="headerlink" title="传递Lambda"></a>传递Lambda</h3><p>filterApples(inventory, (Apple a) -&gt; “green”.quals(a.getColor()));<br>如果Lambda的长度多余几行，他就不那么一目了然了，往往需要一个具体描述名称的方法。实际上Java8已经提供了过滤通用方法比如：<br>statuc <t> Collection<t> filter(Collection<t> c, Predicate<t> p);<br>可以直接写作<br>filter(inventory, (Apple a) -&gt; “green”.equals(a.getColor()))</t></t></t></t></p>
-<h2 id="流"><a href="#流" class="headerlink" title="流"></a>流</h2><p>和Collections处理方式不同的是，COllection是外部迭代，而使用Stream完全不用操心循环的事情，数据处理完全在库内部进行的，这种思想称为内部迭代。<br>另一个问题是使用单核下Collection API很难处理大量的数据，而使用多线程访问共享变量如果没有协调好数据很可能会被意外的改变。<br>Collection主要是为了存储和访问数据，而Stream则主要用于描述对数据的计算。函数式变成中的函数主要有两成意思：：把函数当做一等值；执行时元素之间无互动。</p>
-<h2 id="默认方法"><a href="#默认方法" class="headerlink" title="默认方法"></a>默认方法</h2><p>我们在使用inventory.stream().filter((Apple a) -&gt; a.getWeight &gt; 150).collect(toList())<br>时，List<t>并没有stream或者paralelStream方法，Collection<t>接口也没有。那么现在需要在Collection接口中加入stream方法，所有的实现类都要去去实现该接口，简直如噩梦一般。Java8设计者引入了默认方法，如果实现类没有提供实现的方法签名由接口提供实现（因此就有了默认方法）。这样就给接口设计者一个扩充接口的方式而不破坏现有代码。比如我们扩展Collections的sort方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparator&lt;? <span class="keyword">super</span> E&gt; c)</span></span>&#123;</span><br><span class="line">  Collections.sort(<span class="keyword">this</span>, c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></t></t></p>
-<h2 id="来自函数式编程的其他好思想"><a href="#来自函数式编程的其他好思想" class="headerlink" title="来自函数式编程的其他好思想"></a>来自函数式编程的其他好思想</h2><ul>
-<li>引入Optional<t>类来避免NullPointer异常。它是一个容器对象，可以包含也可以不包含一个值。</t></li>
-<li>模式匹配。在数学中很常见，如 f(0) = 1； f(n) = n*f(n-1) 。Java8支持不是很好，可以参见JVM的类Java语言Scala</li>
-</ul>
-<h1 id="2-通过行文参数化传递代码"><a href="#2-通过行文参数化传递代码" class="headerlink" title="2. 通过行文参数化传递代码"></a>2. 通过行文参数化传递代码</h1><p>如果我们想在一堆苹果中选出我们想要的特征的苹果：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">List&lt;Apple&gt; <span class="title">filter</span><span class="params">(List&lt;Apple&gt; apples, String color，<span class="keyword">int</span> weight， <span class="keyword">boolean</span> flag)</span></span>&#123;</span><br><span class="line">	<span class="comment">//for each</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这是一种很笨拙的做法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Predicate</span>&lt;<span class="title">T</span>&gt;</span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">test</span><span class="params">(T t)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">List&lt;T&gt; <span class="title">filter</span><span class="params">(List&lt;T&gt; list, Predicate&lt;T&gt; p)</span></span>&#123;</span><br><span class="line">    List&lt;T&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span>(T e:list)&#123;</span><br><span class="line">        <span class="keyword">if</span>(p.test(e))&#123;</span><br><span class="line">            result.add(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将参数行为化，又抽象了List，在借助Lambda</span></span><br><span class="line">List&lt;Apple&gt; reApples = filter(inventory, (Apple apple)-&gt;<span class="string">"red"</span>.equal(apple.getColor()));</span><br><span class="line">List&lt;Integer&gt; evenNumbers = filter(numbers, (Integer i)-&gt;i % <span class="number">2</span> == <span class="number">0</span>);</span><br><span class="line"><span class="comment">//在灵活性和简洁性上找到了最佳平衡点</span></span><br></pre></td></tr></table></figure>
-<h3 id="用Runnable执行代码块"><a href="#用Runnable执行代码块" class="headerlink" title="用Runnable执行代码块"></a>用Runnable执行代码块</h3><p>Lambda版本</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Runnable r1 = ()-&gt;System.out.println(<span class="string">"Hello Java!"</span>)</span><br><span class="line">Thread t = <span class="keyword">new</span> Thread(&#123;()-&gt;System.out.println(<span class="string">"Hello World!"</span>)&#125;);</span><br></pre></td></tr></table></figure>
-<p>==行为参数化，就是一个方法接受不同的行为作为参数， 并在内部使用它们，完成不同行为的能力。==行为参数化，可以让代码更好的适应不断变化的需求，减轻未来的工作量。</p>
-<h1 id="3-Lambda表达式"><a href="#3-Lambda表达式" class="headerlink" title="3.Lambda表达式"></a>3.Lambda表达式</h1><p>Lambda表达式有三部分组成：</p>
-<ul>
-<li>参数列表</li>
-<li>箭头</li>
-<li>Lambda主体</li>
-</ul>
-
+<li><p>持久化</p>
+</li>
+<li><p>多种数据结构</p>
+</li>
+<li><p>支持多种编程语言</p>
+</li>
+<li><p>功能丰富</p>
+</li>
+<li><p>简单</p>
+</li>
+<li><p>主从复制</p>
+</li>
+<li><p>高可用、分布式</p>
+        
+          <a class="article-more-a" href="/2018/11/25/Redis/Redis初始/#more">more >></a>
+        
       
 
       
@@ -1045,7 +749,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java基础</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Redis</a>
         		</li>
       		
 		</ul>
@@ -1066,7 +770,222 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/03/05/java基础/Java8/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/11/25/Redis/Redis初始/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Nginx/Nginx基础" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/09/Nginx/Nginx基础/">Nginx基础</a>
+    </h1>
+  
+
+        
+        <a href="/2018/11/09/Nginx/Nginx基础/" class="archive-article-date">
+  	<time datetime="2018-11-09T08:13:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Nginx特征"><a href="#Nginx特征" class="headerlink" title="Nginx特征"></a>Nginx特征</h3><ul>
+<li><p>IO多路复用epoll</p>
+<ul>
+<li>多个描述符的I/O操作都是在一个线程内并发交替地顺序完成。这里的”复用“指的是复用同一个线程。</li>
+<li>epoll模型：相较select模型更加高效。每当FD就绪，采用系统的回调函数之间fd放入，效率更高；最大 连接数无限制。Nginx就是采用了epoll模型</li>
+</ul>
+</li>
+<li><p>轻量级</p>
+<ul>
+<li>功能模块少</li>
+<li>代码模块化</li>
+</ul>
+</li>
+<li><p>CPU亲和（affinity）</p>
+        
+          <a class="article-more-a" href="/2018/11/09/Nginx/Nginx基础/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Nginx</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/11/09/Nginx/Nginx基础/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-分布式事务/分布式事务之三-可靠消息最终一致性方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/07/分布式事务/分布式事务之三-可靠消息最终一致性方案/">可靠消息最终一致性方案</a>
+    </h1>
+  
+
+        
+        <a href="/2018/11/07/分布式事务/分布式事务之三-可靠消息最终一致性方案/" class="archive-article-date">
+  	<time datetime="2018-11-07T13:35:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>设计分析维度：</p>
+<ul>
+<li>消息发送一致性的正向流程</li>
+<li>消息发送一致性的异常处理流程</li>
+<li>消息投递的正向流程</li>
+<li>消息投递的异常处理流程</li>
+</ul>
+<h3 id="1-本地消息服务"><a href="#1-本地消息服务" class="headerlink" title="1.本地消息服务"></a>1.本地消息服务</h3><p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxi1ryjn70j30yn0u00vr.jpg" alt=""></p>
+<ul>
+<li><p>优点：</p>
+<ul>
+<li>消息时效性高</li>
+<li>从应用设计开发的角度实现了消息数据的可靠性，消息数据的可靠性不依赖MQ中间件，弱化了对MQ中间件特性的依赖</li>
+<li>方案轻量， 容易实现</li>
+</ul>
+</li>
+<li><p>缺点</p>
+<ul>
+<li>与具体业务场景绑定，耦合性强，不可共用</li>
+<li>消息数据与业务数据同库，占用业务系统资源</li>
+<li>业务系统在使用关系型数据库的情况下，消息服务的性能会收到关系型数据库并发性能的局限。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-独立消息服务"><a href="#2-独立消息服务" class="headerlink" title="2.独立消息服务"></a>2.独立消息服务</h3><p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fxi45wk7w3j30wv0u0ag7.jpg" alt=""></p>
+<h2 id="设计实现"><a href="#设计实现" class="headerlink" title="设计实现"></a>设计实现</h2><p>需要完成：</p>
+<p>1.消息服务子系统</p>
+<p>2.消息管理子系统（增加）</p>
+<p>3.消息状态确认子系统</p>
+<p>4.消息恢复子系统</p>
+<p>5.实时消息服务</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">分布式事务</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/技术//" class="article-tag-list-link color3">技术</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/11/07/分布式事务/分布式事务之三-可靠消息最终一致性方案/">展开全文 >></a>
         </p>
       
 
@@ -1098,7 +1017,7 @@
   
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1110,7 +1029,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 leon
+    		&copy; 2019 leon
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -1193,18 +1112,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java基础</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">DB</a>
               </li>
              
@@ -1213,15 +1120,43 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">ZooKeeper</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java基础</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">分布式事务</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
               </li>
             
             <div class="clearfix"></div>

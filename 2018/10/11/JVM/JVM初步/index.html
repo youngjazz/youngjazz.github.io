@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>JVM初步 | Leon&#39; Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="jvm初体验 - 堆内存溢出12345678public class Main &amp;#123;    public static void main(String[] args) &amp;#123;        List&amp;lt;Demo&amp;gt; demoList = new ArrayList&amp;lt;&amp;gt;();        while (true)&amp;#123;            demoLis">
+  <meta name="description" content="jvm初体验 - 堆内存溢出123456789101112131415/** * -Xms32M -Xmx32M -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./ * @author leon */public class HeapOOM &amp;#123;    public static void main(String[] args) &amp;#12">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM初步">
 <meta property="og:url" content="http://yoursite.com/2018/10/11/JVM/JVM初步/index.html">
 <meta property="og:site_name" content="Leon&#39; Blog">
-<meta property="og:description" content="jvm初体验 - 堆内存溢出12345678public class Main &amp;#123;    public static void main(String[] args) &amp;#123;        List&amp;lt;Demo&amp;gt; demoList = new ArrayList&amp;lt;&amp;gt;();        while (true)&amp;#123;            demoLis">
+<meta property="og:description" content="jvm初体验 - 堆内存溢出123456789101112131415/** * -Xms32M -Xmx32M -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./ * @author leon */public class HeapOOM &amp;#123;    public static void main(String[] args) &amp;#12">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-30T04:00:41.777Z">
+<meta property="og:updated_time" content="2018-12-06T14:39:27.599Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM初步">
-<meta name="twitter:description" content="jvm初体验 - 堆内存溢出12345678public class Main &amp;#123;    public static void main(String[] args) &amp;#123;        List&amp;lt;Demo&amp;gt; demoList = new ArrayList&amp;lt;&amp;gt;();        while (true)&amp;#123;            demoLis">
+<meta name="twitter:description" content="jvm初体验 - 堆内存溢出123456789101112131415/** * -Xms32M -Xmx32M -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./ * @author leon */public class HeapOOM &amp;#123;    public static void main(String[] args) &amp;#12">
   
     <link rel="alternative" href="/atom.xml" title="Leon&#39; Blog" type="application/atom+xml">
   
@@ -177,23 +177,36 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="jvm初体验-堆内存溢出"><a href="#jvm初体验-堆内存溢出" class="headerlink" title="jvm初体验 - 堆内存溢出"></a>jvm初体验 - 堆内存溢出</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Demo&gt; demoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>)&#123;</span><br><span class="line">            demoList.add(<span class="keyword">new</span> Demo());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="jvm初体验-堆内存溢出"><a href="#jvm初体验-堆内存溢出" class="headerlink" title="jvm初体验 - 堆内存溢出"></a>jvm初体验 - 堆内存溢出</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * -Xms32M -Xmx32M -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> leon</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HeapOOM</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//模拟堆内存溢出</span></span><br><span class="line">        List&lt;Student&gt; demoList = <span class="keyword">new</span> ArrayList&lt;Student&gt;();</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>)&#123;</span><br><span class="line">            demoList.add(<span class="keyword">new</span> Student());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>在IDE中将Main的虚拟机属性设置为 <code>-XX:+HeapDumpOnOutOfMemoryError -Xms20m -Xmx20m</code><br>运行得到</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">java.lang.OutOfMemoryError: Java heap space</span><br><span class="line">Dumping heap to java_pid94659.hprof ...</span><br><span class="line">Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: Java heap space</span><br><span class="line">	at java.util.Arrays.copyOf(Arrays.java:3210)</span><br><span class="line">	at java.util.Arrays.copyOf(Arrays.java:3181)</span><br><span class="line">	at java.util.ArrayList.grow(ArrayList.java:261)</span><br><span class="line">	at java.util.ArrayList.ensureExplicitCapacity(ArrayList.java:235)</span><br><span class="line">	at java.util.ArrayList.ensureCapacityInternal(ArrayList.java:227)</span><br><span class="line">	at java.util.ArrayList.add(ArrayList.java:458)</span><br><span class="line">	at top.neoman.test1.Main.main(Main.java:16)</span><br><span class="line">Heap dump file created [27843280 bytes in 0.180 secs]</span><br></pre></td></tr></table></figure>
 <p>可以使用mat来分析堆导出文件</p>
-<h2 id="虚拟机产品"><a href="#虚拟机产品" class="headerlink" title="虚拟机产品"></a>虚拟机产品</h2><ul>
-<li>Sun Classic VM</li>
-<li>Exact VM</li>
-<li>HotSpot VM</li>
-<li>KVM</li>
-<li>JRockit VM</li>
-<li>J9</li>
-<li>Dalvik</li>
-<li>MicrosoftJVM</li>
-<li>Azul VM &amp; Liquid VM</li>
-<li>TaobaoVM</li>
+<h3 id="非堆区内存溢出"><a href="#非堆区内存溢出" class="headerlink" title="非堆区内存溢出"></a>非堆区内存溢出</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StackTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> StackTest().test();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//模拟栈溢出</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"方法执行..."</span>);</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*** java.lang.instrument ASSERTION FAILED ***: <span class="string">"!errorOutstanding"</span> with message transform method call failed at JPLISAgent.c line: 844</span><br><span class="line">*** java.lang.instrument ASSERTION FAILED ***: <span class="string">"!errorOutstanding"</span> with message transform method call failed at JPLISAgent.c line: 844</span><br><span class="line">Exception <span class="keyword">in</span> thread <span class="string">"main"</span> java.lang.StackOverflowError</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 模拟metaSpace内存溢出</span></span><br><span class="line"><span class="comment"> * -XX:MetaspaceSize=10M -XX:MaxMetaspaceSize=10M -verbose:class</span></span><br><span class="line"><span class="comment"> * Created by leon on 2018-12-02</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MetaSpaceTest</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">10000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            System.out.println(i++);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//Enhancer依赖于cglib</span></span><br><span class="line">            Enhancer enhancer = <span class="keyword">new</span> Enhancer();</span><br><span class="line">            enhancer.setSuperclass(MetaSpaceTest.class);</span><br><span class="line">            enhancer.setUseCache(<span class="keyword">false</span>);</span><br><span class="line">            enhancer.setCallback(</span><br><span class="line">                    <span class="keyword">new</span> MethodInterceptor() &#123;</span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="function"><span class="keyword">public</span> Object <span class="title">intercept</span><span class="params">(Object o, Method method, Object[] objects, MethodProxy methodProxy)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                            <span class="keyword">return</span> methodProxy.invokeSuper(o, args);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">            );</span><br><span class="line">            enhancer.create();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="JVM参数类型"><a href="#JVM参数类型" class="headerlink" title="JVM参数类型"></a>JVM参数类型</h2><ul>
+<li>标准参数</li>
+<li>X参数</li>
+<li>XX参数</li>
 </ul>
+<h3 id="标准参数"><a href="#标准参数" class="headerlink" title="标准参数"></a>标准参数</h3><p>这些参数相对来说比较稳定，在jdk各个版本中基本没有什么区别。比如-version；-showversion； -help；-server；-client；-cp；-classpath等等</p>
+<h3 id="X参数-非标准化参数"><a href="#X参数-非标准化参数" class="headerlink" title="X参数 - 非标准化参数"></a>X参数 - 非标准化参数</h3><ul>
+<li>-Xint：解释执行</li>
+<li>-Xcomp：第一次使用就编译成为本地代码</li>
+<li>-Xmixed：混合模式，JVM自己决定是否编译成本地代码</li>
+</ul>
+<h3 id="XX参数-非标准化参数"><a href="#XX参数-非标准化参数" class="headerlink" title="XX参数 - 非标准化参数"></a>XX参数 - 非标准化参数</h3><ul>
+<li>布尔类型：<code>-XX:[+-]&lt;name&gt;</code>表示启用或者禁用name属性。比如<code>-XX:+UseConcMarkSweepGC</code> <code>-XX:+UseG1GC</code></li>
+<li>KV类型：<code>-XX:&lt;key&gt;=&lt;value&gt;</code>表示key属性的值为value，比如<code>-XX:MaxGCPauseMillis=500</code></li>
+</ul>
+<p>我们常用的-Xmx -Xms -xss是什么参数？实际上他们是XX参数，-Xms等价于-XX:InitialHeapSize, -Xmx等价于-XX:MaxHeapSize</p>
+<h3 id="查看运行时参数的值"><a href="#查看运行时参数的值" class="headerlink" title="查看运行时参数的值"></a>查看运行时参数的值</h3><ul>
+<li>-XX:PrintFlagsInitial</li>
+<li>-XX:PrintFlagsFinal</li>
+</ul>
+<p>如 java -XX:+PrintFlagsFinal -version</p>
+<p>我们可以通过jinfo命令来查看某个进程的运行时参数值，如：jinfo -flag MaxHeapSize 51878; jinfo -flag UseG1GC 3317</p>
 
       
 
@@ -288,18 +301,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/10/12/JVM/JVM-内存管理/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/10/15/JVM/JVM-性能调优案例/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          JVM-内存管理
+          JVM-性能调优
         
       </div>
     </a>
   
   
-    <a href="/2018/09/17/JVM/ClassLoader揭秘/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">ClassLoader揭秘</div>
+    <a href="/2018/09/30/分布式事务/分布式事务之二-消息一致性/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">常见分布式事务解决方案</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -342,7 +355,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 leon
+    		&copy; 2019 leon
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -425,18 +438,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java基础</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">DB</a>
               </li>
              
@@ -445,15 +446,43 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">ZooKeeper</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java基础</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">分布式事务</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">架构设计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java并发</a>
               </li>
             
             <div class="clearfix"></div>

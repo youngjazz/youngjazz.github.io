@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="随着业务的不断增长，单库或单表很难支撑庞大的流量是，我们可能就要考虑分库分表了 分库分表的几种方式 把一个实例中的多个数据库分到到不同的实例  将一个库中的表分离到不同的数据库中   如何这样处理之后仍然不能顶住流量压力，可能就还需要考虑单表拆成多张表 分片处理将一个库中的相关表进行水平拆分到不同实例的数据库中去 如何选择分区键？ 分区键要尽可能避免跨分片查询的发生 分区键要尽可能使各个分片中的数">
+<meta name="keywords" content="DB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分库分表">
+<meta property="og:url" content="http://yoursite.com/2018/03/26/DB/分库分表/index.html">
+<meta property="og:site_name" content="Leon&#39; Blog">
+<meta property="og:description" content="随着业务的不断增长，单库或单表很难支撑庞大的流量是，我们可能就要考虑分库分表了 分库分表的几种方式 把一个实例中的多个数据库分到到不同的实例  将一个库中的表分离到不同的数据库中   如何这样处理之后仍然不能顶住流量压力，可能就还需要考虑单表拆成多张表 分片处理将一个库中的相关表进行水平拆分到不同实例的数据库中去 如何选择分区键？ 分区键要尽可能避免跨分片查询的发生 分区键要尽可能使各个分片中的数">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-04-03T13:28:25.556Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分库分表">
+<meta name="twitter:description" content="随着业务的不断增长，单库或单表很难支撑庞大的流量是，我们可能就要考虑分库分表了 分库分表的几种方式 把一个实例中的多个数据库分到到不同的实例  将一个库中的表分离到不同的数据库中   如何这样处理之后仍然不能顶住流量压力，可能就还需要考虑单表拆成多张表 分片处理将一个库中的相关表进行水平拆分到不同实例的数据库中去 如何选择分区键？ 分区键要尽可能避免跨分片查询的发生 分区键要尽可能使各个分片中的数">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>分库分表</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- rss -->
+    
+    
+</head>
+
+<body>
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/posts/">Writing</a></li>
+         
+          <li><a href="http://github.com/sergodeeva">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/03/26/DB/数据库监控/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/03/05/java基础/Java8/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/03/26/DB/分库分表/"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/03/26/DB/分库分表/&text=分库分表"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/03/26/DB/分库分表/&title=分库分表"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/03/26/DB/分库分表/&is_video=false&description=分库分表"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=分库分表&body=Check out this article: http://yoursite.com/2018/03/26/DB/分库分表/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/03/26/DB/分库分表/&title=分库分表"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/03/26/DB/分库分表/&title=分库分表"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/03/26/DB/分库分表/&title=分库分表"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/03/26/DB/分库分表/&title=分库分表"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/03/26/DB/分库分表/&name=分库分表&description="><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#分库分表的几种方式"><span class="toc-number">1.</span> <span class="toc-text">分库分表的几种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#分片处理"><span class="toc-number">1.1.</span> <span class="toc-text">分片处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何选择分区键？"><span class="toc-number">1.2.</span> <span class="toc-text">如何选择分区键？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何存储无需分片的表？"><span class="toc-number">1.3.</span> <span class="toc-text">如何存储无需分片的表？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何在节点上部署分片？"><span class="toc-number">1.4.</span> <span class="toc-text">如何在节点上部署分片？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何分配分片中的数据？"><span class="toc-number">1.5.</span> <span class="toc-text">如何分配分片中的数据？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何维护表中唯一ID问题？"><span class="toc-number">1.6.</span> <span class="toc-text">如何维护表中唯一ID问题？</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        分库分表
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Leon' Blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2018-03-26T15:44:56.000Z" itemprop="datePublished">2018-03-26</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/DB/">DB</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>随着业务的不断增长，单库或单表很难支撑庞大的流量是，我们可能就要考虑分库分表了</p>
+<h2 id="分库分表的几种方式"><a href="#分库分表的几种方式" class="headerlink" title="分库分表的几种方式"></a>分库分表的几种方式</h2><ul>
+<li><p>把一个实例中的多个数据库分到到不同的实例</p>
+</li>
+<li><p>将一个库中的表分离到不同的数据库中</p>
+</li>
+</ul>
+<p>如何这样处理之后仍然不能顶住流量压力，可能就还需要考虑单表拆成多张表</p>
+<h3 id="分片处理"><a href="#分片处理" class="headerlink" title="分片处理"></a>分片处理</h3><p>将一个库中的相关表进行水平拆分到不同实例的数据库中去</p>
+<h3 id="如何选择分区键？"><a href="#如何选择分区键？" class="headerlink" title="如何选择分区键？"></a>如何选择分区键？</h3><ul>
+<li>分区键要尽可能避免跨分片查询的发生</li>
+<li>分区键要尽可能使各个分片中的数据平均</li>
+</ul>
+<h3 id="如何存储无需分片的表？"><a href="#如何存储无需分片的表？" class="headerlink" title="如何存储无需分片的表？"></a>如何存储无需分片的表？</h3><ul>
+<li>每个分片中存储一份相同的数据(需要使用多写，保证数据一致，还要定期check)</li>
+<li>使用额外的节点统一存储(如果与分片表进行关联查询，就需要由程序查询后再合并了)</li>
+</ul>
+<h3 id="如何在节点上部署分片？"><a href="#如何在节点上部署分片？" class="headerlink" title="如何在节点上部署分片？"></a>如何在节点上部署分片？</h3><ul>
+<li>每个分片使用单一数据库，并且数据库名也相同</li>
+<li>将多个分片表存储在一个数据库并在表名上加入分片号后缀</li>
+<li>在一个节点中部署多个数据库，每个数据库包含一个分片</li>
+</ul>
+<h3 id="如何分配分片中的数据？"><a href="#如何分配分片中的数据？" class="headerlink" title="如何分配分片中的数据？"></a>如何分配分片中的数据？</h3><ul>
+<li>按分区键的Hash值取模来分配分片数据</li>
+<li>按分区键的范围分配分片数据(日期，数值，很容易分配不平均)</li>
+<li>利用分区键和分片的映射表来分配分片数据(这个映射服务会承受很大的压力，也存在分片可能，同时增加缓存，二级缓存来缓解请求压力)</li>
+</ul>
+<h3 id="如何维护表中唯一ID问题？"><a href="#如何维护表中唯一ID问题？" class="headerlink" title="如何维护表中唯一ID问题？"></a>如何维护表中唯一ID问题？</h3><ul>
+<li>使用auto_increment_increment和auto_increment_offset参数(只适用一个节点中只保存一套分区表的情景)</li>
+<li>借助全局表生成自增id(可能成为性能瓶颈)</li>
+<li>在Redis等缓存服务器中创建全局ID</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/posts/">Writing</a></li>
+         
+          <li><a href="http://github.com/sergodeeva">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#分库分表的几种方式"><span class="toc-number">1.</span> <span class="toc-text">分库分表的几种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#分片处理"><span class="toc-number">1.1.</span> <span class="toc-text">分片处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何选择分区键？"><span class="toc-number">1.2.</span> <span class="toc-text">如何选择分区键？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何存储无需分片的表？"><span class="toc-number">1.3.</span> <span class="toc-text">如何存储无需分片的表？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何在节点上部署分片？"><span class="toc-number">1.4.</span> <span class="toc-text">如何在节点上部署分片？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何分配分片中的数据？"><span class="toc-number">1.5.</span> <span class="toc-text">如何分配分片中的数据？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何维护表中唯一ID问题？"><span class="toc-number">1.6.</span> <span class="toc-text">如何维护表中唯一ID问题？</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/03/26/DB/分库分表/"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/03/26/DB/分库分表/&text=分库分表"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/03/26/DB/分库分表/&title=分库分表"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/03/26/DB/分库分表/&is_video=false&description=分库分表"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=分库分表&body=Check out this article: http://yoursite.com/2018/03/26/DB/分库分表/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/03/26/DB/分库分表/&title=分库分表"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/03/26/DB/分库分表/&title=分库分表"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/03/26/DB/分库分表/&title=分库分表"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/03/26/DB/分库分表/&title=分库分表"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/03/26/DB/分库分表/&name=分库分表&description="><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="share"><a class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2021 leon
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/posts/">Writing</a></li>
+         
+          <li><a href="http://github.com/sergodeeva">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-37473492-6', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+

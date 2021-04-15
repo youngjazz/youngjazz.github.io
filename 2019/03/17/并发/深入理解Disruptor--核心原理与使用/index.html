@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Disruptor它是一个开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作 本文内容  Disruptor核心 - RingBuffer、Disrutor Disruptor核心 - Sequence、Sequence Barrier Disruptor核心 - WaitStrategy等待策略 Disruptor核心 - Event、E">
+<meta name="keywords" content="java并发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Disruptor--核心原理与使用">
+<meta property="og:url" content="http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/index.html">
+<meta property="og:site_name" content="Leon&#39; Blog">
+<meta property="og:description" content="Disruptor它是一个开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作 本文内容  Disruptor核心 - RingBuffer、Disrutor Disruptor核心 - Sequence、Sequence Barrier Disruptor核心 - WaitStrategy等待策略 Disruptor核心 - Event、E">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-04-03T13:08:07.447Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解Disruptor--核心原理与使用">
+<meta name="twitter:description" content="Disruptor它是一个开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作 本文内容  Disruptor核心 - RingBuffer、Disrutor Disruptor核心 - Sequence、Sequence Barrier Disruptor核心 - WaitStrategy等待策略 Disruptor核心 - Event、E">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>深入理解Disruptor--核心原理与使用</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- rss -->
+    
+    
+</head>
+
+<body>
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/posts/">Writing</a></li>
+         
+          <li><a href="http://github.com/sergodeeva">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/03/29/MyBatis/MyBatis/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/03/16/Docker/常用软件的安装/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&text=深入理解Disruptor--核心原理与使用"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&title=深入理解Disruptor--核心原理与使用"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&is_video=false&description=深入理解Disruptor--核心原理与使用"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=深入理解Disruptor--核心原理与使用&body=Check out this article: http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&title=深入理解Disruptor--核心原理与使用"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&title=深入理解Disruptor--核心原理与使用"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&title=深入理解Disruptor--核心原理与使用"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&title=深入理解Disruptor--核心原理与使用"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&name=深入理解Disruptor--核心原理与使用&description="><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Disruptor核心原理"><span class="toc-number">2.</span> <span class="toc-text">Disruptor核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RingBuffer"><span class="toc-number">2.1.</span> <span class="toc-text">RingBuffer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Disruptor"><span class="toc-number">2.2.</span> <span class="toc-text">Disruptor</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        深入理解Disruptor--核心原理与使用
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Leon' Blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2019-03-17T04:57:12.000Z" itemprop="datePublished">2019-03-17</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/java并发/">java并发</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>Disruptor它是一个开源的并发框架，并获得<a href="http://www.java.net/dukeschoice" target="_blank" rel="noopener">2011 Duke’s </a>程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作</p>
+<p>本文内容</p>
+<ul>
+<li>Disruptor核心 - RingBuffer、Disrutor</li>
+<li>Disruptor核心 - Sequence、Sequence Barrier</li>
+<li>Disruptor核心 - WaitStrategy等待策略</li>
+<li><p>Disruptor核心 - Event、EventProcessor核心线程</p>
+</li>
+<li><p>Disruptor核心 - EventHandler消费者处理器</p>
+</li>
+<li>Disruptor核心 - WorkProcessor核心工作器</li>
+</ul>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><ol>
+<li><p>建立一个工厂Event类，用于创建Event类实例对象</p>
+</li>
+<li><p>需要有一个监听事件类，用于处理数据（Event类）</p>
+</li>
+<li><p>实例化Disruptor实例，配置一系列参数，编写Disruptor核心组件</p>
+</li>
+<li>编写生产组件，向Disruptor容器中投递数据</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderEvent</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Long value; <span class="comment">//订单价格</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderEventFactory</span> <span class="keyword">implements</span> <span class="title">EventFactory</span>&lt;<span class="title">OrderEvent</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> OrderEvent <span class="title">newInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//返回一个空数据对象的Event</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> OrderEvent();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderEventHandler</span> <span class="keyword">implements</span> <span class="title">EventHandler</span>&lt;<span class="title">OrderEvent</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onEvent</span><span class="params">(OrderEvent orderEvent, <span class="keyword">long</span> l, <span class="keyword">boolean</span> b)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"><span class="comment">//        Thread.sleep(Integer.MAX_VALUE);</span></span><br><span class="line">        System.out.println(<span class="string">"消费者："</span> + orderEvent.getValue());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderEventProducer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> RingBuffer&lt;OrderEvent&gt; ringBuffer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">OrderEventProducer</span><span class="params">(RingBuffer&lt;OrderEvent&gt; ringBuffer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.ringBuffer = ringBuffer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendData</span><span class="params">(ByteBuffer byteBuffer)</span></span>&#123;</span><br><span class="line">        <span class="comment">//1.在生产者发送消息的时候,首先从ringBuffer中获取可用的sequence</span></span><br><span class="line">        <span class="keyword">long</span> sequence = ringBuffer.next();</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="comment">//2.根据序号,找到对应的event, 注意这个event空值对象</span></span><br><span class="line">            OrderEvent orderEvent = ringBuffer.get(sequence);</span><br><span class="line">            <span class="comment">//3.对event进行赋值</span></span><br><span class="line">            orderEvent.setValue(byteBuffer.getLong(<span class="number">0</span>));</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">//4.提交发布</span></span><br><span class="line">            System.out.println(<span class="string">"生产序号:"</span>+sequence);</span><br><span class="line">            ringBuffer.publish(sequence);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//参数准备工作</span></span><br><span class="line">        EventFactory eventFactory = <span class="keyword">new</span> OrderEventFactory();</span><br><span class="line">        <span class="keyword">int</span> ringBufferSize = <span class="number">4</span>;</span><br><span class="line">        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//1.实例化disruptor</span></span><br><span class="line">        Disruptor&lt;OrderEvent&gt; disruptor = <span class="keyword">new</span> Disruptor&lt;OrderEvent&gt;(eventFactory,</span><br><span class="line">                ringBufferSize,</span><br><span class="line">                executor,</span><br><span class="line">                ProducerType.SINGLE,</span><br><span class="line">                <span class="keyword">new</span> BlockingWaitStrategy());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//2.添加消费者监听</span></span><br><span class="line">        disruptor.handleEventsWith(<span class="keyword">new</span> OrderEventHandler());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//3.启动disruptor</span></span><br><span class="line">        disruptor.start();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//4.获取实际存储数据的容器 RingBuffer</span></span><br><span class="line">        RingBuffer&lt;OrderEvent&gt; ringBuffer = disruptor.getRingBuffer();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//生产数据</span></span><br><span class="line">        OrderEventProducer producer  = <span class="keyword">new</span> OrderEventProducer(ringBuffer);</span><br><span class="line"></span><br><span class="line">        ByteBuffer bb = ByteBuffer.allocate(<span class="number">8</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            bb.putLong(<span class="number">0</span>, i);</span><br><span class="line">            producer.sendData(bb);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        disruptor.shutdown();</span><br><span class="line">        executor.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Disruptor核心原理"><a href="#Disruptor核心原理" class="headerlink" title="Disruptor核心原理"></a>Disruptor核心原理</h2><h3 id="RingBuffer"><a href="#RingBuffer" class="headerlink" title="RingBuffer"></a>RingBuffer</h3><ul>
+<li>是一个首尾相接的环，用作哎不同上下文（线程）间传递数据的buffer</li>
+<li>拥有一个序号，这个序号指向数组中下一个可用元素</li>
+<li>通过不停填充buffer，这个序号可能一直增长，直到绕过这个环</li>
+<li>找到序号对应元素，直接取模即可：sequence mode arrLength</li>
+<li><p>事实上，如果槽的个数是<strong>2的N次方</strong>更有利于二进制的计算</p>
+</li>
+<li><p>基于数组实现的缓存实现，也是创建sequencer与定义WaiStrategy的入口</p>
+</li>
+</ul>
+<h3 id="Disruptor"><a href="#Disruptor" class="headerlink" title="Disruptor"></a>Disruptor</h3><ul>
+<li>持有RingBuffer、消费者线程池Excecutor、消费者集合ConsumerRepository等引用</li>
+<li></li>
+</ul>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/posts/">Writing</a></li>
+         
+          <li><a href="http://github.com/sergodeeva">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Disruptor核心原理"><span class="toc-number">2.</span> <span class="toc-text">Disruptor核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RingBuffer"><span class="toc-number">2.1.</span> <span class="toc-text">RingBuffer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Disruptor"><span class="toc-number">2.2.</span> <span class="toc-text">Disruptor</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&text=深入理解Disruptor--核心原理与使用"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&title=深入理解Disruptor--核心原理与使用"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&is_video=false&description=深入理解Disruptor--核心原理与使用"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=深入理解Disruptor--核心原理与使用&body=Check out this article: http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&title=深入理解Disruptor--核心原理与使用"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&title=深入理解Disruptor--核心原理与使用"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&title=深入理解Disruptor--核心原理与使用"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&title=深入理解Disruptor--核心原理与使用"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/03/17/并发/深入理解Disruptor--核心原理与使用/&name=深入理解Disruptor--核心原理与使用&description="><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="share"><a class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2021 leon
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/posts/">Writing</a></li>
+         
+          <li><a href="http://github.com/sergodeeva">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-37473492-6', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+

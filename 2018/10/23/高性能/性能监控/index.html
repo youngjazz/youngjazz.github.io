@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="性能监控命令topvmstat监控操作系统的进程状态、内存、虚拟内存、磁盘IO、CPU的信息 默认参数是K，其中 k, K, m, M 分别代表1000，1024，1000000，1048576字节(byte) free监控系统的内存使用状态 free -h mpstatCentos安装: yum install -y sysstat 可以查看多核心cpu中每个计算核心的统计数据 netstat用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leon&#39; Blog">
+<meta property="og:url" content="http://yoursite.com/2018/10/23/高性能/性能监控/index.html">
+<meta property="og:site_name" content="Leon&#39; Blog">
+<meta property="og:description" content="性能监控命令topvmstat监控操作系统的进程状态、内存、虚拟内存、磁盘IO、CPU的信息 默认参数是K，其中 k, K, m, M 分别代表1000，1024，1000000，1048576字节(byte) free监控系统的内存使用状态 free -h mpstatCentos安装: yum install -y sysstat 可以查看多核心cpu中每个计算核心的统计数据 netstat用">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-05-05T07:41:53.432Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Leon&#39; Blog">
+<meta name="twitter:description" content="性能监控命令topvmstat监控操作系统的进程状态、内存、虚拟内存、磁盘IO、CPU的信息 默认参数是K，其中 k, K, m, M 分别代表1000，1024，1000000，1048576字节(byte) free监控系统的内存使用状态 free -h mpstatCentos安装: yum install -y sysstat 可以查看多核心cpu中每个计算核心的统计数据 netstat用">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Leon&#39; Blog</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- rss -->
+    
+    
+</head>
+
+<body>
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/posts/">Writing</a></li>
+         
+          <li><a href="http://github.com/sergodeeva">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/11/06/HTTP协议/HTTP/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/10/23/java基础/ThreadLocal~/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/10/23/高性能/性能监控/"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/10/23/高性能/性能监控/&text="><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/10/23/高性能/性能监控/&title="><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/10/23/高性能/性能监控/&is_video=false&description="><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=&body=Check out this article: http://yoursite.com/2018/10/23/高性能/性能监控/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/10/23/高性能/性能监控/&title="><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/10/23/高性能/性能监控/&title="><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/10/23/高性能/性能监控/&title="><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/10/23/高性能/性能监控/&title="><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/10/23/高性能/性能监控/&name=&description="><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#性能监控命令"><span class="toc-number">1.</span> <span class="toc-text">性能监控命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#top"><span class="toc-number">1.1.</span> <span class="toc-text">top</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vmstat"><span class="toc-number">1.2.</span> <span class="toc-text">vmstat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#free"><span class="toc-number">1.3.</span> <span class="toc-text">free</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mpstat"><span class="toc-number">1.4.</span> <span class="toc-text">mpstat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netstat"><span class="toc-number">1.5.</span> <span class="toc-text">netstat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iostat"><span class="toc-number">1.6.</span> <span class="toc-text">iostat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sar"><span class="toc-number">1.7.</span> <span class="toc-text">sar</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#stace"><span class="toc-number">1.8.</span> <span class="toc-text">stace</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Leon' Blog</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2018-10-22T16:11:18.000Z" itemprop="datePublished">2018-10-23</time>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="性能监控命令"><a href="#性能监控命令" class="headerlink" title="性能监控命令"></a>性能监控命令</h2><h3 id="top"><a href="#top" class="headerlink" title="top"></a>top</h3><h3 id="vmstat"><a href="#vmstat" class="headerlink" title="vmstat"></a>vmstat</h3><p>监控操作系统的进程状态、内存、虚拟内存、磁盘IO、CPU的信息</p>
+<p>默认参数是K，其中 k, K, m, M 分别代表1000，1024，1000000，1048576字节(byte)</p>
+<h3 id="free"><a href="#free" class="headerlink" title="free"></a>free</h3><p>监控系统的内存使用状态</p>
+<p>free -h</p>
+<h3 id="mpstat"><a href="#mpstat" class="headerlink" title="mpstat"></a>mpstat</h3><p>Centos安装: <code>yum install -y sysstat</code></p>
+<p>可以查看多核心cpu中每个计算核心的统计数据</p>
+<h3 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h3><p>用于显示本机网络连接、运行端口、路由表等信息</p>
+<p>常用：<code>netstat -ntlp</code> <code>netstat -i</code></p>
+<h3 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h3><p>对系统磁盘IO进行监控，输出主要显示磁盘读写操作的统计信息，同时给出cpu的使用情况</p>
+<h3 id="sar"><a href="#sar" class="headerlink" title="sar"></a>sar</h3><p>万能命令</p>
+<h3 id="stace"><a href="#stace" class="headerlink" title="stace"></a>stace</h3><p>一个集诊断、调试、统计于一体的工具，我们可以使用strace对应用的系统调用和信号传递的跟踪结果来对应用进行分析。</p>
+<p>### </p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/posts/">Writing</a></li>
+         
+          <li><a href="http://github.com/sergodeeva">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#性能监控命令"><span class="toc-number">1.</span> <span class="toc-text">性能监控命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#top"><span class="toc-number">1.1.</span> <span class="toc-text">top</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vmstat"><span class="toc-number">1.2.</span> <span class="toc-text">vmstat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#free"><span class="toc-number">1.3.</span> <span class="toc-text">free</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mpstat"><span class="toc-number">1.4.</span> <span class="toc-text">mpstat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netstat"><span class="toc-number">1.5.</span> <span class="toc-text">netstat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iostat"><span class="toc-number">1.6.</span> <span class="toc-text">iostat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sar"><span class="toc-number">1.7.</span> <span class="toc-text">sar</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#stace"><span class="toc-number">1.8.</span> <span class="toc-text">stace</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/10/23/高性能/性能监控/"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/10/23/高性能/性能监控/&text="><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/10/23/高性能/性能监控/&title="><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/10/23/高性能/性能监控/&is_video=false&description="><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=&body=Check out this article: http://yoursite.com/2018/10/23/高性能/性能监控/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/10/23/高性能/性能监控/&title="><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/10/23/高性能/性能监控/&title="><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/10/23/高性能/性能监控/&title="><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/10/23/高性能/性能监控/&title="><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/10/23/高性能/性能监控/&name=&description="><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="share"><a class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2021 leon
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/posts/">Writing</a></li>
+         
+          <li><a href="http://github.com/sergodeeva">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-37473492-6', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+
